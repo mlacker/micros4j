@@ -1,0 +1,16 @@
+server:
+  port: 8000
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: service-data
+          uri: lb://service-data
+          predicates:
+            - Path=/data-api/**
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 3000
+        read-timeout: 1000

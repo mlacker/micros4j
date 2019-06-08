@@ -1,0 +1,27 @@
+spring:
+  cloud:
+    config:
+      allow-override: true
+      override-none: true
+      override-system-properties: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${micros.db.url:172.16.10.38}/ms_${micros.application.name}?characterEncoding=utf8&serverTimezone=GMT%2B8&allowMultiQueries=true
+    username: numysql_root
+    password: '{cipher}d882e29bc3d0f014b308dcd72b787f4474161c5d8ad6bc2d0e6406f8ae9e1b98'
+  jackson:
+    default-property-inclusion: non_empty
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %clr(%5p) %clr(%-40.40logger{39}){cyan} : %message%n%wEx"
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
