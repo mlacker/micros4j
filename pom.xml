@@ -13,6 +13,8 @@
         <module>infrastructure/config</module>
         <module>infrastructure/registry</module>
         <module>infrastructure/gateway</module>
+        <module>services/data/service-data</module>
+        <module>services/data/service-data-api</module>
     </modules>
 
     <properties>
