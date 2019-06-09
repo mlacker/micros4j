@@ -4,10 +4,12 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: service-data
-          uri: lb://service-data
-          predicates:
-            - Path=/data-api/**
+      - id: service-data
+        uri: lb://service-data
+        predicates:
+        - Path=/data-api/**
+        filters:
+        - StripPrefix=1
 feign:
   client:
     config:
