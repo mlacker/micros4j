@@ -7,7 +7,7 @@ Microservice Architecture with Spring Cloud and Docker.
 - [x] 配置加密
 - [x] 服务注册与发现
 - [x] Spring Cloud Gateway
-- [ ] 基础模块
+- [x] 基础模块
 - [ ] 实现业务原型
     - [x] 数据服务
     - [ ] 表单服务

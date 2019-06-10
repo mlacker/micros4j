@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
+        <module>shared/core</module>
         <module>infrastructure/config</module>
         <module>infrastructure/registry</module>
         <module>infrastructure/gateway</module>
