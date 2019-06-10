@@ -23,5 +23,7 @@ logging:
   pattern:
     console: "%d{HH:mm:ss.SSS} %clr(%5p) %clr(%-40.40logger{39}){cyan} : %message%n%wEx"
 mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
   mapper-locations: classpath:mapper/*.xml
 
