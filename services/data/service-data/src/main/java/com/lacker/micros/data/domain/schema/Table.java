@@ -1,8 +1,11 @@
 package com.lacker.micros.data.domain.schema;
 
+import com.lacker.micros.domain.entity.AggregateRoot;
+import com.lacker.micros.domain.entity.EntityImpl;
+
 import java.util.List;
 
-public class Table {
+public class Table extends EntityImpl implements AggregateRoot {
 
     private String name;
     private String tableName;

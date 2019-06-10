@@ -36,4 +36,9 @@ public class TableRepositoryImpl implements TableRepository {
 
         return table;
     }
+
+    @Override
+    public void save(Table table) {
+
+    }
 }

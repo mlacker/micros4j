@@ -1,6 +1,8 @@
 package com.lacker.micros.data.domain.schema;
 
-public class Column {
+import com.lacker.micros.domain.entity.EntityImpl;
+
+public class Column extends EntityImpl {
 
     private String name;
     private String tableId;
