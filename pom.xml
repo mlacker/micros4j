@@ -16,6 +16,8 @@
         <module>infrastructure/gateway</module>
         <module>services/data/service-data</module>
         <module>services/data/service-data-api</module>
+        <module>services/auth/service-auth</module>
+        <module>services/auth/service-auth-api</module>
     </modules>
 
     <properties>
