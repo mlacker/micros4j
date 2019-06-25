@@ -3,9 +3,3 @@ server:
 micros:
   application:
     name: auth
-  security:
-    token:
-      expiration-time: 10
-      refresh-exp-time: 30
-      issuer: http://micros.lacker.com
-      signing-key: lacker

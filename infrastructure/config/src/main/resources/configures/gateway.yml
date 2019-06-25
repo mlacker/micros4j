@@ -4,6 +4,12 @@ spring:
   cloud:
     gateway:
       routes:
+      - id: service-auth
+        uri: lb://service-auth
+        predicates:
+          - Path=/auth-api/**
+        filters:
+          - StripPrefix=1
       - id: service-data
         uri: lb://service-data
         predicates:
@@ -14,5 +20,5 @@ feign:
   client:
     config:
       default:
-        connect-timeout: 3000
-        read-timeout: 1000
+        connect-timeout: 1000
+        read-timeout: 3000

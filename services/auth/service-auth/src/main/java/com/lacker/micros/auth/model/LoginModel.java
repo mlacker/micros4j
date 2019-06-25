@@ -1,9 +1,6 @@
-package com.lacker.micros.auth.domain;
+package com.lacker.micros.auth.model;
 
-import com.lacker.micros.domain.entity.AggregateRoot;
-import com.lacker.micros.domain.entity.EntityImpl;
-
-public class User extends EntityImpl implements AggregateRoot{
+public class LoginModel {
 
     private String username;
     private String password;

@@ -23,7 +23,13 @@ logging:
   pattern:
     console: "%d{HH:mm:ss.SSS} %clr(%5p) %clr(%-40.40logger{39}){cyan} : %message%n%wEx"
 mybatis:
+  mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
-  mapper-locations: classpath:mapper/*.xml
+micros:
+  security:
+    token:
+      signing-key: '{cipher}af612ee2e81e1811f3df834e6b1236f7783dfde74f16482134efeecb30a8e52f'
+      issuer: micros
+      expires: 30
 
