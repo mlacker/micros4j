@@ -11,9 +11,9 @@ Microservice Architecture with Spring Cloud and Docker.
 - [ ] 实现业务原型
     - [x] 数据服务
     - [ ] 表单服务
-    - [ ] 认证服务
+    - [x] 认证服务
     - [ ] 报表服务
-- [ ] 认证授权
+- [x] 认证授权
 - [ ] 异步消息队列
 - [ ] 动态更新配置
 - [ ] Spring Cloud Alibaba
