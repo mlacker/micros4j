@@ -3,3 +3,10 @@ server:
 micros:
   application:
     name: data
+spring:
+  cloud:
+    stream:
+      bindings:
+        createAccount:
+          destination: createAccounts
+          group: data

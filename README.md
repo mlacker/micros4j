@@ -14,9 +14,11 @@ Microservice Architecture with Spring Cloud and Docker.
     - [x] 认证服务
     - [ ] 报表服务
 - [x] 认证授权
-- [ ] 异步消息队列
+- [x] 异步消息队列
 - [ ] 动态更新配置
 - [ ] Spring Cloud Alibaba
 - [ ] 分布式事务框架
 - [ ] 数据库读写分离
 - [ ] 多租户
+- [ ] 监控
+- [ ] 故障下线

@@ -3,3 +3,9 @@ server:
 micros:
   application:
     name: auth
+spring:
+  cloud:
+    stream:
+      bindings:
+        createAccount:
+          destination: createAccounts
