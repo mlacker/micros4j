@@ -7,6 +7,7 @@ import com.lacker.micros.data.repository.mapper.TableMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TableRepositoryImpl implements TableRepository {
@@ -27,14 +28,14 @@ public class TableRepositoryImpl implements TableRepository {
     }
 
     @Override
-    public Table find(String id) {
+    public Optional<Table> find(String id) {
         Table table = tableMapper.find(id);
 
         if (table != null) {
             table.setColumns(columnMapper.findByTable(id));
         }
 
-        return table;
+        return Optional.ofNullable(table);
     }
 
     @Override

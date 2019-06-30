@@ -10,3 +10,9 @@ spring:
         createAccount:
           destination: createAccounts
           group: data
+        updateAccount:
+          destination: updateAccounts
+          group: data
+        deleteAccount:
+          destination: deleteAccounts
+          group: data

@@ -3,6 +3,7 @@ package com.lacker.micros.data.service;
 import com.lacker.micros.data.api.model.TableModel;
 import com.lacker.micros.data.domain.schema.Table;
 import com.lacker.micros.data.domain.schema.TableRepository;
+import com.lacker.micros.domain.exception.NotFoundAppException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,8 @@ public class SchemaService {
     }
 
     public TableModel findSchema(String id) {
-        Table table = repo.find(id);
+        Table table = repo.find(id)
+                .orElseThrow(NotFoundAppException::new);
 
         return mapper.map(table, TableModel.class);
     }

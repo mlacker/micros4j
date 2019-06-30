@@ -9,3 +9,7 @@ spring:
       bindings:
         createAccount:
           destination: createAccounts
+        updateAccount:
+          destination: updateAccounts
+        deleteAccount:
+          destination: deleteAccounts

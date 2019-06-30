@@ -1,7 +1,7 @@
 package com.lacker.micros.auth.controller;
 
-import com.lacker.micros.auth.model.LoginModel;
-import com.lacker.micros.auth.service.UserService;
+import com.lacker.micros.auth.model.user.LoginModel;
+import com.lacker.micros.auth.service.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService userService;
+    private final AccountService accountService;
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
+    public AuthController(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginModel model) {
-        String token = userService.login(model);
+        String token = accountService.login(model);
 
         return ResponseEntity.ok(token);
     }

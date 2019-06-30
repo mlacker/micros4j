@@ -1,8 +1,13 @@
 package com.lacker.micros.auth.controller;
 
-import com.lacker.micros.auth.stream.publisher.AccountPublisher;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.lacker.micros.auth.api.model.AccountModel;
+import com.lacker.micros.auth.service.AccountService;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,15 +15,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/accounts")
 public class AccountController {
 
-    private final AccountPublisher accountPublisher;
+    private final AccountService service;
 
-    @Autowired
-    public AccountController(AccountPublisher accountPublisher) {
-        this.accountPublisher = accountPublisher;
+    public AccountController(AccountService service) {
+        this.service = service;
     }
 
-    @GetMapping("create")
-    public void create() {
-        accountPublisher.createAccount();
+    @GetMapping("{id}")
+    public AccountModel get(@PathVariable String id) {
+        return service.get(id);
+    }
+
+    @PostMapping
+    public void create(@RequestBody AccountModel model) {
+        service.create(model);
+    }
+
+    @PutMapping
+    public void modify(@RequestBody AccountModel model) {
+        service.modify(model);
+    }
+
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable String id) {
+        service.delete(id);
     }
 }
