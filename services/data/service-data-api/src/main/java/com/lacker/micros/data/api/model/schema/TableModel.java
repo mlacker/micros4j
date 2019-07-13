@@ -1,4 +1,4 @@
-package com.lacker.micros.data.api.model;
+package com.lacker.micros.data.api.model.schema;
 
 import java.util.List;
 

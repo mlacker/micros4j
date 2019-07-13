@@ -1,6 +1,6 @@
 package com.lacker.micros.data.api.client;
 
-import com.lacker.micros.data.api.model.TableModel;
+import com.lacker.micros.data.api.model.schema.TableModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

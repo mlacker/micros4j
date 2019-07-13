@@ -1,4 +1,4 @@
-package com.lacker.micros.data.api.model;
+package com.lacker.micros.data.api.model.schema;
 
 public class ColumnModel {
 

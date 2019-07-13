@@ -1,7 +1,7 @@
 package com.lacker.micros.data.controller;
 
 import com.lacker.micros.data.api.client.SchemaClient;
-import com.lacker.micros.data.api.model.TableModel;
+import com.lacker.micros.data.api.model.schema.TableModel;
 import com.lacker.micros.data.service.SchemaService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
