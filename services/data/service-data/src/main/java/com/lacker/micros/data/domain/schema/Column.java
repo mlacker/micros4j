@@ -1,11 +1,8 @@
 package com.lacker.micros.data.domain.schema;
 
 import com.lacker.micros.domain.entity.EntityImpl;
-import net.sf.jsqlparser.expression.Expression;
-import net.sf.jsqlparser.expression.ExpressionVisitor;
-import net.sf.jsqlparser.parser.SimpleNode;
 
-public class Column extends EntityImpl implements Expression {
+public class Column extends EntityImpl {
 
     private String name;
     private String tableId;
@@ -60,49 +57,5 @@ public class Column extends EntityImpl implements Expression {
 
     public void setProtected(boolean aProtected) {
         isProtected = aProtected;
-    }
-
-    @Override
-    public void accept(ExpressionVisitor expressionVisitor) {
-    }
-
-    private SimpleNode node;
-
-    @Override
-    public SimpleNode getASTNode() {
-        return node;
-    }
-
-    @Override
-    public void setASTNode(SimpleNode node) {
-        this.node = node;
-    }
-
-    public Table getTable() {
-        return null;
-    }
-
-    public String getColumnName(boolean aliases) {
-        StringBuilder fqn = new StringBuilder();
-
-        if (getTable() != null) {
-            if (getTable().getAlias() != null && aliases) {
-                fqn.append(getTable().getAlias().getName());
-            } else {
-                fqn.append(getTable().toString());
-            }
-        }
-        if (fqn.length() > 0) {
-            fqn.append('.');
-        }
-        if (columnName != null) {
-            fqn.append(columnName);
-        }
-        return fqn.toString();
-    }
-
-    @Override
-    public String toString() {
-        return getColumnName(true);
     }
 }

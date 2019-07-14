@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/data")
@@ -22,21 +23,26 @@ public class DataController implements FormDataClient, ReportDataClient {
 
     @Override
     public List<DataModel> load(String id, String tableId, List<String> relationIds) {
-        return null;
+        return service.load(id, tableId, relationIds);
     }
 
     @Override
     public void save(List<DataModel> models) {
-
+        service.save(models);
     }
 
     @Override
     public void delete(String id, String tableId) {
-
+        service.delete(id, tableId);
     }
 
     @Override
-    public DataModel query(QueryModel model) {
+    public List<Map<String, Object>> query(QueryModel model) {
         return service.query(model);
+    }
+
+    @Override
+    public Long queryCount(QueryModel model) {
+        return service.queryCount(model);
     }
 }

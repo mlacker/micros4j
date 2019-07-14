@@ -2,18 +2,15 @@ package com.lacker.micros.data.domain.schema;
 
 import com.lacker.micros.domain.entity.AggregateRoot;
 import com.lacker.micros.domain.entity.EntityImpl;
-import net.sf.jsqlparser.expression.Alias;
-import net.sf.jsqlparser.statement.select.FromItem;
-import net.sf.jsqlparser.statement.select.FromItemVisitor;
-import net.sf.jsqlparser.statement.select.Pivot;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Table extends EntityImpl implements AggregateRoot, FromItem {
+public class Table extends EntityImpl implements AggregateRoot {
 
     private String name;
     private String tableName;
-    private List<Column> columns;
+    private List<Column> columns = new ArrayList<>();
     private boolean isProtected;
 
     public String getName() {
@@ -48,32 +45,13 @@ public class Table extends EntityImpl implements AggregateRoot, FromItem {
         isProtected = aProtected;
     }
 
-    @Override
-    public void accept(FromItemVisitor fromItemVisitor) {
+    public Column getColumn(String columnId) {
+        return this.columns.stream().filter(m -> m.getId().equals(columnId)).findAny().orElse(null);
     }
 
-    @Override
-    public Alias getAlias() {
-        return null;
-    }
-
-    @Override
-    public void setAlias(Alias alias) {
-
-    }
-
-    @Override
-    public Pivot getPivot() {
-        return null;
-    }
-
-    @Override
-    public void setPivot(Pivot pivot) {
-    }
-
-    @Override
-    public String toString() {
-        return getTableName()
-                + ((getAlias() != null) ? getAlias().toString() : "");
+    public Column getPrimaryKey() {
+        return columns.stream()
+                .filter(Column::isPrimaryKey).findAny()
+                .orElseThrow(() -> new IllegalArgumentException("primary key is missing, table: " + getId()));
     }
 }
