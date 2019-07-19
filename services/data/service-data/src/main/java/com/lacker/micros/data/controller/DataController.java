@@ -4,6 +4,7 @@ import com.lacker.micros.data.api.client.FormDataClient;
 import com.lacker.micros.data.api.client.ReportDataClient;
 import com.lacker.micros.data.api.model.data.DataModel;
 import com.lacker.micros.data.api.model.data.QueryModel;
+import com.lacker.micros.data.api.model.schema.SchemaModel;
 import com.lacker.micros.data.service.DataService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,8 +23,8 @@ public class DataController implements FormDataClient, ReportDataClient {
     }
 
     @Override
-    public List<DataModel> load(String id, String tableId, List<String> relationIds) {
-        return service.load(id, tableId, relationIds);
+    public List<DataModel> load(String id, SchemaModel model) {
+        return service.load(id, model);
     }
 
     @Override

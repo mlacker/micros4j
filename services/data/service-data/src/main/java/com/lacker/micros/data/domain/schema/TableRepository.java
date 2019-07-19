@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface TableRepository extends Repository<Table> {
 
+    Table findOne(String id);
+
     List<Table> findAll();
 }

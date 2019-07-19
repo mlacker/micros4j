@@ -2,6 +2,7 @@ package com.lacker.micros.data.service;
 
 import com.lacker.micros.data.api.model.data.QueryModel;
 import com.lacker.micros.data.domain.data.DataRepository;
+import com.lacker.micros.data.service.statement.SchemaTransformer;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

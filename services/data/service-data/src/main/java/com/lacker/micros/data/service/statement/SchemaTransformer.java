@@ -1,4 +1,4 @@
-package com.lacker.micros.data.service;
+package com.lacker.micros.data.service.statement;
 
 import com.lacker.micros.data.domain.schema.Column;
 import com.lacker.micros.data.domain.schema.Table;

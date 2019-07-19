@@ -2,10 +2,12 @@ package com.lacker.micros.data.service;
 
 import com.lacker.micros.data.api.model.data.DataModel;
 import com.lacker.micros.data.api.model.data.QueryModel;
+import com.lacker.micros.data.api.model.form.load.LoadSchemaModel;
 import com.lacker.micros.data.domain.data.DataRepository;
 import com.lacker.micros.data.domain.schema.Column;
 import com.lacker.micros.data.domain.schema.Table;
 import com.lacker.micros.data.domain.schema.TableRepository;
+import com.lacker.micros.data.service.statement.SchemaTransformer;
 import com.lacker.micros.domain.exception.NotFoundAppException;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.LongValue;
@@ -33,8 +35,38 @@ public class DataService {
         this.schemaTransformer = schemaTransformer;
     }
 
-    public List<DataModel> load(String dataId, String tableId, List<String> relationIds) {
+    public List<DataModel> load(String dataId, LoadSchemaModel model) {
+        /* TODO
+         *  数据加载的逻辑已经构建完成，还需要整理优化
+         *  参数可以使用带索引的参数代替命名参数，简化 UUID 的处理问题
+         *  如何设计语句构建功能？目前表单涉及的语句有：
+         *      查询： 数据加载，保存时查询是否已存在
+         *      插入，更新，删除
+         */
+        List<Map<String, Object>> primaryRows = loadForTable(model.getPrimary(), null, dataId);
+        if (primaryRows.size() == 0) {
+            throw new NotFoundAppException();
+        }
+        Map<String, Object> primaryData = primaryRows.get(0);
+
+        for (LoadSchemaModel.LoadRelationModel relationModel : model.getRelations()) {
+            List<Map<String, Object>> maps = loadForTable(
+                    relationModel.getForeignTable(), relationModel.getForeignColumn(), primaryData.get(relationModel.getPrimaryColumn()));
+        }
+
+        // SELECT * FROM primary WHERE id = #{dataId}
+        // for
+        //  SELECT * FROM foreign WHERE fk = pk(value)
+        // query(table, includeColumns, condition, conditionValue) : Select
         return null;
+    }
+
+    private List<Map<String, Object>> loadForTable(LoadSchemaModel.LoadTableModel tableModel, String conditionColumn, Object conditionValue) {
+        Table table = tableRepo.findOne(tableModel.getId());
+        Select select = buildQueryStatement(table, tableModel.getIncludeColumns(), table.getColumn(conditionColumn));
+        Map<String, Object> params = new HashMap<>();
+        params.put(conditionColumn, conditionValue);
+        return dataRepo.query(select, params);
     }
 
     public void save(List<DataModel> models) {

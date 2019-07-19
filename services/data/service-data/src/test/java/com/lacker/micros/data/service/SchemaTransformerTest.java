@@ -3,6 +3,7 @@ package com.lacker.micros.data.service;
 import com.lacker.micros.data.domain.schema.Column;
 import com.lacker.micros.data.domain.schema.Table;
 import com.lacker.micros.data.domain.schema.TableRepository;
+import com.lacker.micros.data.service.statement.SchemaTransformer;
 import com.lacker.micros.domain.exception.InvalidOperationAppException;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;

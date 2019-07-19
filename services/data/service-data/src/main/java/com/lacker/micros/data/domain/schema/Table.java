@@ -49,9 +49,23 @@ public class Table extends EntityImpl implements AggregateRoot {
         return this.columns.stream().filter(m -> m.getId().equals(columnId)).findAny().orElse(null);
     }
 
+    private Column getColumnByName(String columnName) {
+        return columns.stream().filter(m -> m.getColumnName().equals(columnName)).findAny().orElse(null);
+    }
+
     public Column getPrimaryKey() {
         return columns.stream()
                 .filter(Column::isPrimaryKey).findAny()
-                .orElseThrow(() -> new IllegalArgumentException("primary key is missing, table: " + getId()));
+                .orElseThrow(() -> new IllegalStateException("Column primary key is missing, table: " + getId()));
+    }
+
+    public Column getDeleteFlag() {
+        Column deleted = getColumnByName("Deleted");
+
+        if (deleted == null) {
+            throw new IllegalStateException("Column deleted is missing, table: " + getId());
+        }
+
+        return deleted;
     }
 }

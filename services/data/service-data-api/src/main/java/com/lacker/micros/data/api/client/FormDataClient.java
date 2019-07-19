@@ -1,6 +1,7 @@
 package com.lacker.micros.data.api.client;
 
 import com.lacker.micros.data.api.model.data.DataModel;
+import com.lacker.micros.data.api.model.schema.SchemaModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface FormDataClient {
 
     @GetMapping("load/{id}")
-    List<DataModel> load(@PathVariable String id, String tableId, List<String> relationIds);
+    List<DataModel> load(@PathVariable String id, SchemaModel model);
 
     @PostMapping("save")
     void save(@RequestBody List<DataModel> models);

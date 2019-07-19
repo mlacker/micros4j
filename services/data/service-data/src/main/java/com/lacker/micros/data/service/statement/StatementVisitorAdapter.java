@@ -1,4 +1,4 @@
-package com.lacker.micros.data.service;
+package com.lacker.micros.data.service.statement;
 
 import net.sf.jsqlparser.expression.AllComparisonExpression;
 import net.sf.jsqlparser.expression.AnalyticExpression;
