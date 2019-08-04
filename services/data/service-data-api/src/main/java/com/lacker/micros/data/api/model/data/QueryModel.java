@@ -1,11 +1,11 @@
 package com.lacker.micros.data.api.model.data;
 
-import java.util.Map;
+import java.util.List;
 
 public class QueryModel {
 
     private String statement;
-    private Map<String, Object> params;
+    private List<Object> parameters;
 
     public String getStatement() {
         return statement;
@@ -15,11 +15,11 @@ public class QueryModel {
         this.statement = statement;
     }
 
-    public Map<String, Object> getParams() {
-        return params;
+    public List<Object> getParameters() {
+        return parameters;
     }
 
-    public void setParams(Map<String, Object> params) {
-        this.params = params;
+    public void setParameters(List<Object> parameters) {
+        this.parameters = parameters;
     }
 }

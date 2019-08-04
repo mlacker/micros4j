@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,7 +24,7 @@ public class DataServiceTest {
         this.dataRepo = mock(DataRepository.class);
         SchemaTransformer schemaTransformer = mock(SchemaTransformer.class);
 
-        this.service = new DataService(dataRepo, null, schemaTransformer);
+        this.service = new DataService(dataRepo, null, schemaTransformer, null);
     }
 
     @Test
@@ -57,9 +57,9 @@ public class DataServiceTest {
         QueryModel model = new QueryModel();
         model.setStatement(
                 "SELECT * FROM `1695CC54-2020-0074-B175-4B08C61C9F5E` AS `1695CC54-2020-0074-B175-4B08C61C9F5E` " +
-                        "WHERE `1695CC54-2020-0074-B175-4B08C61C9F5E`.`1695CC54-2020-0073-B176-932268F0C22E` = :id");
-        model.setParams(new HashMap<>());
-        model.getParams().put("id", "1695CC8F-3E30-001F-8497-4FAE33CCF3FE");
+                        "WHERE `1695CC54-2020-0074-B175-4B08C61C9F5E`.`1695CC54-2020-0073-B176-932268F0C22E` = ?");
+        model.setParameters(new ArrayList<>());
+        model.getParameters().add("1695CC8F-3E30-001F-8497-4FAE33CCF3FE");
 
         service.query(model);
     }

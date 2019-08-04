@@ -1,7 +1,7 @@
 package com.lacker.micros.data.service;
 
-import com.lacker.micros.data.domain.schema.Column;
-import com.lacker.micros.data.domain.schema.Table;
+import com.lacker.micros.data.domain.schema.DataColumn;
+import com.lacker.micros.data.domain.schema.DataTable;
 import com.lacker.micros.data.domain.schema.TableRepository;
 import com.lacker.micros.data.service.statement.SchemaTransformer;
 import com.lacker.micros.domain.exception.InvalidOperationAppException;
@@ -25,20 +25,20 @@ public class SchemaTransformerTest {
 
     @Before
     public void setUp() {
-        Column columnA1 = new Column();
+        DataColumn columnA1 = new DataColumn();
         columnA1.setId("ci-a1");
         columnA1.setColumnName("cn-a1");
 
-        Table tableA = new Table();
+        DataTable tableA = new DataTable();
         tableA.setId("ti-a");
         tableA.setTableName("tn-a");
         tableA.getColumns().add(columnA1);
 
-        Column columnB1 = new Column();
+        DataColumn columnB1 = new DataColumn();
         columnB1.setId("ci-b1");
         columnB1.setColumnName("cn-b1");
 
-        Table tableB = new Table();
+        DataTable tableB = new DataTable();
         tableB.setId("ti-b");
         tableB.setTableName("tn-b");
         tableB.getColumns().add(columnB1);

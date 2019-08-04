@@ -1,6 +1,6 @@
 package com.lacker.micros.data.repository;
 
-import com.lacker.micros.data.domain.schema.Table;
+import com.lacker.micros.data.domain.schema.DataTable;
 import com.lacker.micros.data.domain.schema.TableRepository;
 import com.lacker.micros.data.repository.mapper.ColumnMapper;
 import com.lacker.micros.data.repository.mapper.TableMapper;
@@ -24,18 +24,18 @@ public class TableRepositoryImpl implements TableRepository {
     }
 
     @Override
-    public List<Table> findAll() {
+    public List<DataTable> findAll() {
         return tableMapper.findAll();
     }
 
     @Override
-    public Table findOne(String id) {
+    public DataTable findOne(String id) {
         return find(id).orElseThrow(NotFoundAppException::new);
     }
 
     @Override
-    public Optional<Table> find(String id) {
-        Table table = tableMapper.find(id);
+    public Optional<DataTable> find(String id) {
+        DataTable table = tableMapper.find(id);
 
         if (table != null) {
             table.setColumns(columnMapper.findByTable(id));
@@ -45,7 +45,7 @@ public class TableRepositoryImpl implements TableRepository {
     }
 
     @Override
-    public void save(Table table) {
+    public void save(DataTable table) {
 
     }
 }

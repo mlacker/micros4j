@@ -6,11 +6,11 @@ import com.lacker.micros.domain.entity.EntityImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Table extends EntityImpl implements AggregateRoot {
+public class DataTable extends EntityImpl implements AggregateRoot {
 
     private String name;
     private String tableName;
-    private List<Column> columns = new ArrayList<>();
+    private List<DataColumn> columns = new ArrayList<>();
     private boolean isProtected;
 
     public String getName() {
@@ -29,11 +29,11 @@ public class Table extends EntityImpl implements AggregateRoot {
         this.tableName = tableName;
     }
 
-    public List<Column> getColumns() {
+    public List<DataColumn> getColumns() {
         return columns;
     }
 
-    public void setColumns(List<Column> columns) {
+    public void setColumns(List<DataColumn> columns) {
         this.columns = columns;
     }
 
@@ -45,22 +45,27 @@ public class Table extends EntityImpl implements AggregateRoot {
         isProtected = aProtected;
     }
 
-    public Column getColumn(String columnId) {
+    public DataColumn getColumn(String columnId) {
         return this.columns.stream().filter(m -> m.getId().equals(columnId)).findAny().orElse(null);
     }
 
-    private Column getColumnByName(String columnName) {
+    private DataColumn getColumnByName(String columnName) {
         return columns.stream().filter(m -> m.getColumnName().equals(columnName)).findAny().orElse(null);
     }
 
-    public Column getPrimaryKey() {
-        return columns.stream()
-                .filter(Column::isPrimaryKey).findAny()
-                .orElseThrow(() -> new IllegalStateException("Column primary key is missing, table: " + getId()));
+    private DataColumn primaryKey;
+    public DataColumn getPrimaryKey() {
+        if (primaryKey == null) {
+            primaryKey = columns.stream()
+                    .filter(DataColumn::isPrimaryKey).findAny()
+                    .orElseThrow(() -> new IllegalStateException("Column primary key is missing, table: " + getId()));
+        }
+
+        return primaryKey;
     }
 
-    public Column getDeleteFlag() {
-        Column deleted = getColumnByName("Deleted");
+    public DataColumn getDeleteFlag() {
+        DataColumn deleted = getColumnByName("Deleted");
 
         if (deleted == null) {
             throw new IllegalStateException("Column deleted is missing, table: " + getId());

@@ -8,11 +8,11 @@ import java.util.Map;
 
 public interface DataRepository {
 
-    List<Map<String, Object>> query(Select select, Map<String, Object> params);
+    List<Map<String, Object>> query(Select select, List<Object> params);
 
-    Long queryForObject(Select select, Map<String, Object> params, Class<Long> requiredType);
+    <T> T queryForObject(Select select, List<Object> params, Class<T> requiredType);
 
-    int update(Statement statement, Map<String, Object> params);
+    int update(Statement statement, List<Object> params);
 
     void execute(Statement statement);
 }

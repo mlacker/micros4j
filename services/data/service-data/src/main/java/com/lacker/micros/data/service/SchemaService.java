@@ -1,7 +1,7 @@
 package com.lacker.micros.data.service;
 
 import com.lacker.micros.data.api.model.schema.TableModel;
-import com.lacker.micros.data.domain.schema.Table;
+import com.lacker.micros.data.domain.schema.DataTable;
 import com.lacker.micros.data.domain.schema.TableRepository;
 import com.lacker.micros.domain.exception.NotFoundAppException;
 import org.modelmapper.ModelMapper;
@@ -24,14 +24,14 @@ public class SchemaService {
     }
 
     public List<TableModel> findAll() {
-        List<Table> tables = repo.findAll();
+        List<DataTable> tables = repo.findAll();
 
         return mapper.map(tables, new TypeToken<List<TableModel>>() {
         }.getType());
     }
 
     public TableModel findSchema(String id) {
-        Table table = repo.find(id)
+        DataTable table = repo.find(id)
                 .orElseThrow(NotFoundAppException::new);
 
         return mapper.map(table, TableModel.class);

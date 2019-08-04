@@ -1,6 +1,6 @@
 package com.lacker.micros.data.repository.mapper;
 
-import com.lacker.micros.data.domain.schema.Table;
+import com.lacker.micros.data.domain.schema.DataTable;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 public interface TableMapper {
 
     @Select("SELECT * FROM data_table")
-    List<Table> findAll();
+    List<DataTable> findAll();
 
-    Table find(String id);
+    DataTable find(String id);
 }

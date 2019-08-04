@@ -4,9 +4,9 @@ import com.lacker.micros.domain.repository.Repository;
 
 import java.util.List;
 
-public interface TableRepository extends Repository<Table> {
+public interface TableRepository extends Repository<DataTable> {
 
-    Table findOne(String id);
+    DataTable findOne(String id);
 
-    List<Table> findAll();
+    List<DataTable> findAll();
 }

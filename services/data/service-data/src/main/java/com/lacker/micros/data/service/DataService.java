@@ -4,10 +4,12 @@ import com.lacker.micros.data.api.model.data.DataModel;
 import com.lacker.micros.data.api.model.data.QueryModel;
 import com.lacker.micros.data.api.model.form.load.LoadSchemaModel;
 import com.lacker.micros.data.domain.data.DataRepository;
-import com.lacker.micros.data.domain.schema.Column;
-import com.lacker.micros.data.domain.schema.Table;
+import com.lacker.micros.data.domain.schema.DataColumn;
+import com.lacker.micros.data.domain.schema.DataTable;
 import com.lacker.micros.data.domain.schema.TableRepository;
+import com.lacker.micros.data.domain.statement.ParameterStatement;
 import com.lacker.micros.data.service.statement.SchemaTransformer;
+import com.lacker.micros.data.service.statement.builder.FormStatementBuilder;
 import com.lacker.micros.domain.exception.NotFoundAppException;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.LongValue;
@@ -17,10 +19,12 @@ import net.sf.jsqlparser.statement.select.Limit;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class DataService {
@@ -28,102 +32,107 @@ public class DataService {
     private final DataRepository dataRepo;
     private final TableRepository tableRepo;
     private final SchemaTransformer schemaTransformer;
+    private final FormStatementBuilder formStatementBuilder;
 
-    public DataService(DataRepository dataRepo, TableRepository tableRepo, SchemaTransformer schemaTransformer) {
+    public DataService(DataRepository dataRepo, TableRepository tableRepo, SchemaTransformer schemaTransformer, FormStatementBuilder formStatementBuilder) {
         this.dataRepo = dataRepo;
         this.tableRepo = tableRepo;
         this.schemaTransformer = schemaTransformer;
+        this.formStatementBuilder = formStatementBuilder;
     }
 
     public List<DataModel> load(String dataId, LoadSchemaModel model) {
-        /* TODO
-         *  数据加载的逻辑已经构建完成，还需要整理优化
-         *  参数可以使用带索引的参数代替命名参数，简化 UUID 的处理问题
-         *  如何设计语句构建功能？目前表单涉及的语句有：
-         *      查询： 数据加载，保存时查询是否已存在
-         *      插入，更新，删除
-         */
-        List<Map<String, Object>> primaryRows = loadForTable(model.getPrimary(), null, dataId);
-        if (primaryRows.size() == 0) {
+        List<DataModel> dataModels = new ArrayList<>();
+
+        DataModel primaryModel = loadForTable(model.getPrimary(), null, dataId);
+        if (primaryModel.getDataMaps().size() == 0) {
             throw new NotFoundAppException();
         }
-        Map<String, Object> primaryData = primaryRows.get(0);
+        dataModels.add(primaryModel);
 
         for (LoadSchemaModel.LoadRelationModel relationModel : model.getRelations()) {
-            List<Map<String, Object>> maps = loadForTable(
-                    relationModel.getForeignTable(), relationModel.getForeignColumn(), primaryData.get(relationModel.getPrimaryColumn()));
+            DataModel dataModel = loadForTable(
+                    relationModel.getForeignTable(), relationModel.getForeignColumn(), primaryModel.getDataMaps().get(0).get(relationModel.getPrimaryColumn()));
+            dataModels.add(dataModel);
         }
 
-        // SELECT * FROM primary WHERE id = #{dataId}
-        // for
-        //  SELECT * FROM foreign WHERE fk = pk(value)
-        // query(table, includeColumns, condition, conditionValue) : Select
-        return null;
+        return dataModels;
     }
 
-    private List<Map<String, Object>> loadForTable(LoadSchemaModel.LoadTableModel tableModel, String conditionColumn, Object conditionValue) {
-        Table table = tableRepo.findOne(tableModel.getId());
-        Select select = buildQueryStatement(table, tableModel.getIncludeColumns(), table.getColumn(conditionColumn));
-        Map<String, Object> params = new HashMap<>();
-        params.put(conditionColumn, conditionValue);
-        return dataRepo.query(select, params);
+    private DataModel loadForTable(LoadSchemaModel.LoadTableModel tableModel, String conditionColumn, Object conditionValue) {
+        DataTable table = tableRepo.findOne(tableModel.getId());
+        ParameterStatement statement = formStatementBuilder.select(table, tableModel.getIncludeColumns(), table.getColumn(conditionColumn), conditionValue);
+        List<Map<String, Object>> dataMaps = dataRepo.query((Select) statement.getStatement(), statement.getParameters());
+
+        DataModel dataModel = new DataModel();
+        dataModel.setTableId(table.getId());
+        dataModel.setDataMaps(dataMaps);
+        return dataModel;
     }
 
+    @Transactional
     public void save(List<DataModel> models) {
+        List<ParameterStatement> statements = new ArrayList<>();
         for (DataModel model : models) {
-            Table table = tableRepo.find(model.getTableId())
-                    .orElseThrow(NotFoundAppException::new);
+            DataTable table = tableRepo.findOne(model.getTableId());
 
-            transformToData(table, model.getDataMaps());
+            statements.addAll(saveForTable(table, model.getIncludeColumns(), model.getConditions(), model.getDataMaps()));
+        }
+
+        for (ParameterStatement statement : statements) {
+            dataRepo.update(statement.getStatement(), statement.getParameters());
         }
     }
 
-    private void transformToData(Table table, List<Map<String, Object>> dataMaps) {
+    private List<String> fetchDatabase(DataTable table, Map<String, List<String>> conditions) {
+        ParameterStatement statement = formStatementBuilder.selectIn(table, conditions);
+
+        return dataRepo.query((Select) statement.getStatement(), statement.getParameters()).stream()
+                .map(m -> String.valueOf(m.get(table.getPrimaryKey().getId())))
+                .collect(Collectors.toList());
+    }
+
+    private List<ParameterStatement> saveForTable(DataTable table, List<String> includeColumns, Map<String, List<String>> conditions, List<Map<String, Object>> dataMaps) {
+        DataColumn primaryKey = table.getPrimaryKey();
+
+        List<String> persistIds = fetchDatabase(table, conditions);
+
+        List<Map<String, Object>> insertRows = new ArrayList<>();
+        List<Map<String, Object>> updateRows = new ArrayList<>();
         for (Map<String, Object> dataMap : dataMaps) {
-            String state = (String) dataMap.get("state");
+            String id = String.valueOf(dataMap.get(primaryKey.getId()));
 
-            if (state == null) {
-                String dataId = (String) dataMap.get(table.getPrimaryKey().getId());
-
-                state = "create";
-                if (dataId != null) {
-                    HashMap<String, Object> params = new HashMap<>();
-                    params.put("id", dataId);
-                    Long count = dataRepo.queryForObject(
-                            "SELECT COUNT(*) FROM table WHERE id = :id", params, Long.class);
-
-                    if (count > 0) {
-                        state = "update";
-                    }
-                }
+            if (persistIds.contains(id)) {
+                updateRows.add(dataMap);
+                persistIds.remove(id);
+            } else {
+                insertRows.add(dataMap);
             }
-
-            for (String key : dataMap.keySet()) {
-                Column column = table.getColumn(key);
-
-                if (column == null) {
-                    dataMap.remove(key);
-                }
-            }
-
-            dataMap.put("state", state);
         }
+
+        List<ParameterStatement> statements = new ArrayList<>();
+        statements.add(formStatementBuilder.insert(table, includeColumns, insertRows));
+        statements.addAll(formStatementBuilder.update(table, includeColumns, updateRows));
+        statements.add(formStatementBuilder.delete(table, persistIds));
+        return statements;
     }
 
     public void delete(String dataId, String tableId) {
+        DataTable table = tableRepo.findOne(tableId);
 
+        formStatementBuilder.delete(table, dataId);
     }
 
     public List<Map<String, Object>> query(QueryModel model) {
         Select select = parseSqlStatement(model.getStatement());
 
-        return dataRepo.query(select, model.getParams());
+        return dataRepo.query(select, model.getParameters());
     }
 
     public Long queryCount(QueryModel model) {
         Select select = parseSqlStatement(model.getStatement());
 
-        return dataRepo.queryForObject(select, model.getParams(), Long.class);
+        return dataRepo.queryForObject(select, model.getParameters(), Long.class);
     }
 
     private Select parseSqlStatement(String queryStatement) {
