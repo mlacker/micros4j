@@ -1,4 +1,4 @@
-package com.lacker.micros.data.service.statement.builder;
+package com.lacker.micros.data.service.statement;
 
 import com.lacker.micros.data.domain.schema.DataColumn;
 import com.lacker.micros.data.domain.schema.DataTable;
@@ -15,13 +15,13 @@ import net.sf.jsqlparser.expression.operators.relational.InExpression;
 import net.sf.jsqlparser.expression.operators.relational.MultiExpressionList;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
-import net.sf.jsqlparser.statement.delete.Delete;
 import net.sf.jsqlparser.statement.insert.Insert;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
 import net.sf.jsqlparser.statement.update.Update;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,10 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class FormStatementBuilder {
+@Component
+public class StatementBuilder {
 
-    // SELECT id, a, b FROM table WHERE id = ? AND deleted = 0
-    // SELECT id, a, b FROM table WHERE fk = ? AND deleted = 0
     public ParameterStatement select(DataTable table, List<String> includeColumns, DataColumn conditionColumn, Object value) {
         ParameterStatement statement = new ParameterStatement();
 
@@ -41,7 +40,7 @@ public class FormStatementBuilder {
                 .map(m -> {
                     SelectExpressionItem selectExpressionItem = new SelectExpressionItem();
                     selectExpressionItem.setExpression(getColumn(m));
-                    selectExpressionItem.setAlias(new Alias(m.getId()));
+                    selectExpressionItem.setAlias(new Alias(appendBackQuote(m.getId())));
                     return (SelectItem) selectExpressionItem;
                 })
                 .collect(Collectors.toList());
@@ -50,32 +49,18 @@ public class FormStatementBuilder {
         equalsTo.setLeftExpression(getColumn(conditionColumn));
         equalsTo.setRightExpression(statement.addParameter(value));
 
-        EqualsTo notDeleted = new EqualsTo();
-        notDeleted.setRightExpression(getColumn(table.getDeleteFlag()));
-        notDeleted.setRightExpression(new LongValue(0));
-
-        Expression where = new AndExpression(equalsTo, notDeleted);
-
-        PlainSelect plainSelect = new PlainSelect();
-        plainSelect.setSelectItems(selectItems);
-        plainSelect.setFromItem(getTable(table));
-        plainSelect.setWhere(where);
-
-        Select select = new Select();
-        select.setSelectBody(plainSelect);
-
-        statement.setStatement(select);
+        Expression where = withNotDeleted(table, equalsTo);
+        statement.setStatement(buildSelect(selectItems, table, where));
 
         return statement;
     }
 
-    // SELECT id FROM table WHERE (id IN (?, ?, ?) OR fk1 IN (?, ?, ?) OR fk2 IN (?, ?, ?)) AND deleted = 0
     public ParameterStatement selectIn(DataTable table, Map<String, List<String>> conditions) {
         ParameterStatement statement = new ParameterStatement();
 
         SelectExpressionItem selectExpressionItem = new SelectExpressionItem();
         selectExpressionItem.setExpression(getColumn(table.getPrimaryKey()));
-        selectExpressionItem.setAlias(new Alias(table.getPrimaryKey().getId()));
+        selectExpressionItem.setAlias(new Alias(appendBackQuote(table.getPrimaryKey().getId())));
         List<SelectItem> selectItems = Collections.singletonList(selectExpressionItem);
 
         Expression leftExpression = null;
@@ -91,26 +76,12 @@ public class FormStatementBuilder {
             }
         }
 
-        EqualsTo notDeleted = new EqualsTo();
-        notDeleted.setRightExpression(getColumn(table.getDeleteFlag()));
-        notDeleted.setRightExpression(new LongValue(0));
-
-        Expression where = new AndExpression(new Parenthesis(leftExpression), notDeleted);
-
-        PlainSelect plainSelect = new PlainSelect();
-        plainSelect.setSelectItems(selectItems);
-        plainSelect.setFromItem(getTable(table));
-        plainSelect.setWhere(where);
-
-        Select select = new Select();
-        select.setSelectBody(plainSelect);
-
-        statement.setStatement(select);
+        Expression where = withNotDeleted(table, leftExpression);
+        statement.setStatement(buildSelect(selectItems, table, where));
 
         return statement;
     }
 
-    // INSERT INTO table (id, a, b) VALUES (?, ?, ?), (?, ?, ?)
     public ParameterStatement insert(DataTable table, List<String> includeColumns, List<Map<String, Object>> rows) {
         List<DataColumn> columns = table.getColumns().stream()
                 .filter(m -> includeColumns.contains(m.getId()))
@@ -140,7 +111,6 @@ public class FormStatementBuilder {
         return statement;
     }
 
-    // UPDATE table SET a = ?, b = ? WHERE id = ?
     public List<ParameterStatement> update(DataTable table, List<String> includeColumns, List<Map<String, Object>> rows) {
         List<ParameterStatement> statements = new ArrayList<>();
         List<DataColumn> columns = table.getColumns().stream()
@@ -153,14 +123,14 @@ public class FormStatementBuilder {
         for (Map<String, Object> row : rows) {
             ParameterStatement statement = new ParameterStatement();
 
+            EqualsTo equalsTo = new EqualsTo();
+            equalsTo.setLeftExpression(updatePrimaryColumn);
+            equalsTo.setRightExpression(statement.addParameter(row.get(table.getPrimaryKey().getId())));
+
             List<Expression> expressions = new ArrayList<>();
             for (DataColumn column : columns) {
                 expressions.add(statement.addParameter(row.get(column.getId())));
             }
-
-            EqualsTo equalsTo = new EqualsTo();
-            equalsTo.setLeftExpression(updatePrimaryColumn);
-            equalsTo.setRightExpression(statement.addParameter(row.get(table.getPrimaryKey().getId())));
 
             Update update = new Update();
             update.setTables(updateTable);
@@ -168,13 +138,13 @@ public class FormStatementBuilder {
             update.setExpressions(expressions);
             update.setWhere(equalsTo);
 
+            statement.setStatement(update);
             statements.add(statement);
         }
 
         return statements;
     }
 
-    // UPDATE table SET deleted = 1 WHERE id IN (?, ?, ?)
     public ParameterStatement delete(DataTable table, List<String> rows) {
         ParameterStatement statement = new ParameterStatement();
 
@@ -183,23 +153,48 @@ public class FormStatementBuilder {
                 rows.stream().map(statement::addParameter).collect(Collectors.toList()));
         InExpression inExpression = new InExpression(idColumn, idParameters);
 
-        Delete delete = new Delete();
-        delete.setTable(getTable(table));
-        delete.setWhere(inExpression);
+        Update update = new Update();
+        update.setTables(Collections.singletonList(getTable(table)));
+        update.setColumns(Collections.singletonList(getColumn(table.getDeleteFlag())));
+        update.setExpressions(Collections.singletonList(new LongValue(1)));
+        update.setWhere(inExpression);
 
+        statement.setStatement(update);
         return statement;
     }
 
-    // UPDATE table SET deleted = 1 WHERE id IN (?)
     public ParameterStatement delete(DataTable table, String id) {
         return delete(table, Collections.singletonList(id));
     }
 
     private Table getTable(DataTable table) {
-        return new Table(table.getTableName());
+        return new Table(appendBackQuote(table.getTableName()));
     }
 
     private Column getColumn(DataColumn column) {
-        return new Column(column.getColumnName());
+        return new Column(appendBackQuote(column.getColumnName()));
+    }
+
+    private String appendBackQuote(String text) {
+        return "`" + text + "`";
+    }
+
+    private Select buildSelect(List<SelectItem> selectItems, DataTable table, Expression where) {
+        PlainSelect plainSelect = new PlainSelect();
+        plainSelect.setSelectItems(selectItems);
+        plainSelect.setFromItem(getTable(table));
+        plainSelect.setWhere(where);
+
+        Select select = new Select();
+        select.setSelectBody(plainSelect);
+        return select;
+    }
+
+    private Expression withNotDeleted(DataTable table, Expression expression) {
+        EqualsTo notDeleted = new EqualsTo();
+        notDeleted.setLeftExpression(getColumn(table.getDeleteFlag()));
+        notDeleted.setRightExpression(new LongValue(0));
+
+        return new AndExpression(new Parenthesis(expression), notDeleted);
     }
 }

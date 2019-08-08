@@ -1,9 +1,8 @@
-package com.lacker.micros.data.service;
+package com.lacker.micros.data.service.statement;
 
-import com.lacker.micros.data.domain.schema.DataColumn;
 import com.lacker.micros.data.domain.schema.DataTable;
 import com.lacker.micros.data.domain.schema.TableRepository;
-import com.lacker.micros.data.service.statement.SchemaTransformer;
+import com.lacker.micros.data.service.TableBuilder;
 import com.lacker.micros.domain.exception.InvalidOperationAppException;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
@@ -19,35 +18,24 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 
-public class SchemaTransformerTest {
+public class StetementTransformerTest {
 
-    private SchemaTransformer transformer;
+    private StetementTransformer transformer;
 
     @Before
     public void setUp() {
-        DataColumn columnA1 = new DataColumn();
-        columnA1.setId("ci-a1");
-        columnA1.setColumnName("cn-a1");
-
-        DataTable tableA = new DataTable();
-        tableA.setId("ti-a");
-        tableA.setTableName("tn-a");
-        tableA.getColumns().add(columnA1);
-
-        DataColumn columnB1 = new DataColumn();
-        columnB1.setId("ci-b1");
-        columnB1.setColumnName("cn-b1");
-
-        DataTable tableB = new DataTable();
-        tableB.setId("ti-b");
-        tableB.setTableName("tn-b");
-        tableB.getColumns().add(columnB1);
+        DataTable tableA = TableBuilder.createTable("ti-a", "tn-a")
+                .createColumn("ci-a1", "cn-a1")
+                .build();
+        DataTable tableB = TableBuilder.createTable("ti-b", "tn-b")
+                .createColumn("ci-b1", "cn-b1")
+                .build();
 
         TableRepository repo = Mockito.mock(TableRepository.class);
         doReturn(Optional.of(tableA)).when(repo).find(eq("ti-a"));
         doReturn(Optional.of(tableB)).when(repo).find(eq("ti-b"));
 
-        this.transformer = new SchemaTransformer(repo);
+        this.transformer = new StetementTransformer(repo);
     }
 
     @Test

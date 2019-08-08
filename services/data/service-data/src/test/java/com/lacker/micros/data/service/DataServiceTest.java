@@ -2,7 +2,7 @@ package com.lacker.micros.data.service;
 
 import com.lacker.micros.data.api.model.data.QueryModel;
 import com.lacker.micros.data.domain.data.DataRepository;
-import com.lacker.micros.data.service.statement.SchemaTransformer;
+import com.lacker.micros.data.service.statement.StetementTransformer;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -22,9 +22,9 @@ public class DataServiceTest {
     @Before
     public void setUp() {
         this.dataRepo = mock(DataRepository.class);
-        SchemaTransformer schemaTransformer = mock(SchemaTransformer.class);
+        StetementTransformer schemaTransformer = mock(StetementTransformer.class);
 
-        this.service = new DataService(dataRepo, null, schemaTransformer, null);
+        this.service = new DataService(null, schemaTransformer, dataRepo, null);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class DataServiceTest {
 
         model.setStatement("SELECT * FROM table LIMIT 1000");
         service.query(model);
-        verify(dataRepo).query(any(), any());
+        verify(dataRepo).query(any());
 
         model.setStatement("SELECT * FROM table LIMIT 1001");
         try {

@@ -65,7 +65,7 @@ public class DataTable extends EntityImpl implements AggregateRoot {
     }
 
     public DataColumn getDeleteFlag() {
-        DataColumn deleted = getColumnByName("Deleted");
+        DataColumn deleted = getColumnByName("deleted");
 
         if (deleted == null) {
             throw new IllegalStateException("Column deleted is missing, table: " + getId());

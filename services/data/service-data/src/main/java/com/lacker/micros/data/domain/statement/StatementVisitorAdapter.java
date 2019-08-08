@@ -1,4 +1,4 @@
-package com.lacker.micros.data.service.statement;
+package com.lacker.micros.data.domain.statement;
 
 import net.sf.jsqlparser.expression.AllComparisonExpression;
 import net.sf.jsqlparser.expression.AnalyticExpression;
@@ -765,7 +765,7 @@ public abstract class StatementVisitorAdapter implements
     public void visit(NamedExpressionList namedExpressionList) {
     }
 
-    protected void visitBinaryExpression(BinaryExpression binaryExpression) {
+    private void visitBinaryExpression(BinaryExpression binaryExpression) {
         binaryExpression.getLeftExpression().accept(this);
         binaryExpression.getRightExpression().accept(this);
     }

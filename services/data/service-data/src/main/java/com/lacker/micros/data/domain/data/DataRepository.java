@@ -1,18 +1,18 @@
 package com.lacker.micros.data.domain.data;
 
+import com.lacker.micros.data.domain.statement.ParameterStatement;
 import net.sf.jsqlparser.statement.Statement;
-import net.sf.jsqlparser.statement.select.Select;
 
 import java.util.List;
 import java.util.Map;
 
 public interface DataRepository {
 
-    List<Map<String, Object>> query(Select select, List<Object> params);
+    List<Map<String, Object>> query(ParameterStatement statement);
 
-    <T> T queryForObject(Select select, List<Object> params, Class<T> requiredType);
+    <T> T queryForObject(ParameterStatement statement, Class<T> requiredType);
 
-    int update(Statement statement, List<Object> params);
+    int update(ParameterStatement statement);
 
     void execute(Statement statement);
 }

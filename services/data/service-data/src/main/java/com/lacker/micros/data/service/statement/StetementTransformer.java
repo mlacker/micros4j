@@ -3,17 +3,20 @@ package com.lacker.micros.data.service.statement;
 import com.lacker.micros.data.domain.schema.DataColumn;
 import com.lacker.micros.data.domain.schema.DataTable;
 import com.lacker.micros.data.domain.schema.TableRepository;
+import com.lacker.micros.data.domain.statement.StatementVisitorAdapter;
 import com.lacker.micros.domain.exception.InvalidOperationAppException;
+import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.schema.Table;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-public class SchemaTransformer extends StatementVisitorAdapter {
+public class StetementTransformer extends StatementVisitorAdapter {
 
     private final TableRepository tableRepo;
 
-    public SchemaTransformer(TableRepository tableRepo) {
+    public StetementTransformer(TableRepository tableRepo) {
         this.tableRepo = tableRepo;
     }
 
@@ -23,13 +26,13 @@ public class SchemaTransformer extends StatementVisitorAdapter {
     }
 
     @Override
-    public void visit(net.sf.jsqlparser.schema.Table tableName) {
+    public void visit(Table tableName) {
         DataTable table = getTable(tableName.getName());
         tableName.setName("`" + table.getTableName() + "`");
     }
 
     @Override
-    public void visit(net.sf.jsqlparser.schema.Column tableColumn) {
+    public void visit(Column tableColumn) {
         super.visit(tableColumn);
         if (tableColumn.getTable() == null) {
             throw new UnsupportedOperationException("column must have a table");

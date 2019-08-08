@@ -10,6 +10,14 @@ public class ParameterStatement {
     private Statement statement;
     private List<Object> parameters = new ArrayList<>();
 
+    public ParameterStatement() {
+    }
+
+    public ParameterStatement(Statement statement, List<Object> parameters) {
+        this.statement = statement;
+        this.parameters = parameters;
+    }
+
     public Statement getStatement() {
         return statement;
     }
@@ -26,5 +34,10 @@ public class ParameterStatement {
         parameters.add(value);
 
         return new JdbcParameter(parameters.size() - 1, true);
+    }
+
+    @Override
+    public String toString() {
+        return statement.toString();
     }
 }
