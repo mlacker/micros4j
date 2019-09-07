@@ -1,10 +1,10 @@
 package com.lacker.micros.domain.exception;
 
-public class FeignException extends ApplicationException {
+public class ForwardHttpException extends Exception {
 
     private final int status;
 
-    public FeignException(int status, String message) {
+    public ForwardHttpException(int status, String message) {
         super(message);
         this.status = status;
     }

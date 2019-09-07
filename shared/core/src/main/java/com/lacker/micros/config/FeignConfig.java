@@ -1,6 +1,6 @@
 package com.lacker.micros.config;
 
-import com.lacker.micros.domain.exception.FeignException;
+import com.lacker.micros.domain.exception.ForwardHttpException;
 import feign.Util;
 import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,7 @@ public class FeignConfig {
                 message = Util.toString(response.body().asReader());
             } catch (IOException ignored) {
             }
-            return new FeignException(response.status(), message);
+            return new ForwardHttpException(response.status(), message);
         };
     }
 }

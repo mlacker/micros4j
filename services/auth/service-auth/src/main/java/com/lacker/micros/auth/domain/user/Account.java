@@ -2,7 +2,7 @@ package com.lacker.micros.auth.domain.user;
 
 import com.lacker.micros.domain.entity.AggregateRoot;
 import com.lacker.micros.domain.entity.EntityImpl;
-import com.lacker.micros.domain.infrastructure.uuid.UUIDGenerator;
+import com.lacker.micros.domain.infrastructure.id.UUIDGenerator;
 
 public class Account extends EntityImpl implements AggregateRoot{
 

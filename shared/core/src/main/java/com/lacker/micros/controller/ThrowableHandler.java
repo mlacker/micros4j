@@ -1,7 +1,7 @@
 package com.lacker.micros.controller;
 
 import com.lacker.micros.domain.exception.ApplicationException;
-import com.lacker.micros.domain.exception.FeignException;
+import com.lacker.micros.domain.exception.ForwardHttpException;
 import com.lacker.micros.domain.exception.NotFoundAppException;
 import com.lacker.micros.model.ErrorModel;
 import org.slf4j.Logger;
@@ -46,8 +46,8 @@ public class ThrowableHandler {
      * @param exception Feign 异常
      * @return 返回原请求的响应状态码及消息
      */
-    @ExceptionHandler(FeignException.class)
-    public ResponseEntity<?> feignException(FeignException exception) {
+    @ExceptionHandler(ForwardHttpException.class)
+    public ResponseEntity<?> feignException(ForwardHttpException exception) {
         return ResponseEntity.status(exception.status()).body(exception.getMessage());
     }
 

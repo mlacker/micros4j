@@ -1,4 +1,4 @@
-package com.lacker.micros.domain.infrastructure.uuid;
+package com.lacker.micros.domain.infrastructure.id;
 
 import java.util.UUID;
 
