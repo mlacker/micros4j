@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Import;
 //})
 @MapperScan(basePackages = "com.lacker.micros.data.repository.mapper")
 @Import({
+        com.lacker.micros.config.FeignConfig.class,
         com.lacker.micros.config.MapperConfig.class
 })
 public class DataApplication {
