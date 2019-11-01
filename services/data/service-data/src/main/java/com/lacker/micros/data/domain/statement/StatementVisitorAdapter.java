@@ -3,6 +3,7 @@ package com.lacker.micros.data.domain.statement;
 import net.sf.jsqlparser.expression.AllComparisonExpression;
 import net.sf.jsqlparser.expression.AnalyticExpression;
 import net.sf.jsqlparser.expression.AnyComparisonExpression;
+import net.sf.jsqlparser.expression.ArrayExpression;
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.CaseExpression;
 import net.sf.jsqlparser.expression.CastExpression;
@@ -46,6 +47,7 @@ import net.sf.jsqlparser.expression.operators.arithmetic.BitwiseRightShift;
 import net.sf.jsqlparser.expression.operators.arithmetic.BitwiseXor;
 import net.sf.jsqlparser.expression.operators.arithmetic.Concat;
 import net.sf.jsqlparser.expression.operators.arithmetic.Division;
+import net.sf.jsqlparser.expression.operators.arithmetic.IntegerDivision;
 import net.sf.jsqlparser.expression.operators.arithmetic.Modulo;
 import net.sf.jsqlparser.expression.operators.arithmetic.Multiplication;
 import net.sf.jsqlparser.expression.operators.arithmetic.Subtraction;
@@ -55,9 +57,11 @@ import net.sf.jsqlparser.expression.operators.relational.Between;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.ExistsExpression;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
+import net.sf.jsqlparser.expression.operators.relational.FullTextSearch;
 import net.sf.jsqlparser.expression.operators.relational.GreaterThan;
 import net.sf.jsqlparser.expression.operators.relational.GreaterThanEquals;
 import net.sf.jsqlparser.expression.operators.relational.InExpression;
+import net.sf.jsqlparser.expression.operators.relational.IsBooleanExpression;
 import net.sf.jsqlparser.expression.operators.relational.IsNullExpression;
 import net.sf.jsqlparser.expression.operators.relational.ItemsListVisitor;
 import net.sf.jsqlparser.expression.operators.relational.JsonOperator;
@@ -75,6 +79,7 @@ import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Block;
 import net.sf.jsqlparser.statement.Commit;
+import net.sf.jsqlparser.statement.DeclareStatement;
 import net.sf.jsqlparser.statement.DescribeStatement;
 import net.sf.jsqlparser.statement.ExplainStatement;
 import net.sf.jsqlparser.statement.SetStatement;
@@ -580,9 +585,8 @@ public abstract class StatementVisitorAdapter implements
 
     @Override
     public void visit(Update update) {
-        for (Table table : update.getTables()) {
-            visit(table);
-        }
+        visit(update.getTable());
+
         if (update.getExpressions() != null) {
             for (Expression expression : update.getExpressions()) {
                 expression.accept(this);
@@ -763,6 +767,26 @@ public abstract class StatementVisitorAdapter implements
 
     @Override
     public void visit(NamedExpressionList namedExpressionList) {
+    }
+
+    @Override
+    public void visit(IntegerDivision integerDivision) {
+    }
+
+    @Override
+    public void visit(FullTextSearch fullTextSearch) {
+    }
+
+    @Override
+    public void visit(IsBooleanExpression isBooleanExpression) {
+    }
+
+    @Override
+    public void visit(ArrayExpression arrayExpression) {
+    }
+
+    @Override
+    public void visit(DeclareStatement declareStatement) {
     }
 
     private void visitBinaryExpression(BinaryExpression binaryExpression) {

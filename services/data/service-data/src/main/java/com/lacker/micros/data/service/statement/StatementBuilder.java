@@ -116,7 +116,6 @@ public class StatementBuilder {
         List<DataColumn> columns = table.getColumns().stream()
                 .filter(m -> !m.equals(table.getPrimaryKey()) && includeColumns.contains(m.getId()))
                 .collect(Collectors.toList());
-        List<Table> updateTable = Collections.singletonList(getTable(table));
         Column updatePrimaryColumn = getColumn(table.getPrimaryKey());
         List<Column> updateColumns = columns.stream().map(this::getColumn).collect(Collectors.toList());
 
@@ -133,7 +132,7 @@ public class StatementBuilder {
             }
 
             Update update = new Update();
-            update.setTables(updateTable);
+            update.setTable(getTable(table));
             update.setColumns(updateColumns);
             update.setExpressions(expressions);
             update.setWhere(equalsTo);
@@ -154,7 +153,7 @@ public class StatementBuilder {
         InExpression inExpression = new InExpression(idColumn, idParameters);
 
         Update update = new Update();
-        update.setTables(Collections.singletonList(getTable(table)));
+        update.setTable(getTable(table));
         update.setColumns(Collections.singletonList(getColumn(table.getDeleteFlag())));
         update.setExpressions(Collections.singletonList(new LongValue(1)));
         update.setWhere(inExpression);
