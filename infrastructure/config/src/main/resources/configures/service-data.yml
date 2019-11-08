@@ -3,6 +3,24 @@ server:
 micros:
   application:
     name: data
+  datasource:
+    general:
+      master:
+        url: 'jdbc:mysql://localhost/ms_data?characterEncoding=utf8&serverTimezone=GMT%2B8&allowMultiQueries=true&useSSL=false'
+      slaves:
+        database: localhost/ms_data_read
+        username: micros_all_read
+    defaults:
+      url-template: 'jdbc:mysql://${database}?characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false'
+      username: micros_all
+      password: p@ssword
+    multi-tenants:
+      huaao:
+        master:
+          database: localhost/ms_data_huaao
+        slaves:
+          database: localhost/ms_data_huaao_read
+          username: micros_all_read
 spring:
   cloud:
     stream:

@@ -5,6 +5,8 @@ import com.lacker.micros.data.api.model.data.QueryModel;
 import com.lacker.micros.data.api.model.form.load.LoadRelationModel;
 import com.lacker.micros.data.api.model.form.load.LoadSchemaModel;
 import com.lacker.micros.data.domain.data.DataRepository;
+import com.lacker.micros.data.domain.datasource.DataSource;
+import com.lacker.micros.data.domain.datasource.MultiDataSourceType;
 import com.lacker.micros.data.domain.schema.DataColumn;
 import com.lacker.micros.data.domain.schema.DataTable;
 import com.lacker.micros.data.domain.schema.TableRepository;
@@ -43,6 +45,7 @@ public class DataService {
         this.tableRepo = tableRepo;
     }
 
+    @DataSource(MultiDataSourceType.Slaves)
     public List<DataModel> load(String dataId, LoadSchemaModel model) {
         List<DataModel> dataModels = new ArrayList<>();
 
@@ -67,6 +70,7 @@ public class DataService {
     }
 
     @Transactional
+    @DataSource(MultiDataSourceType.Master)
     public void save(List<DataModel> models) {
         List<ParameterStatement> statements = new ArrayList<>();
         for (DataModel model : models) {
@@ -78,6 +82,7 @@ public class DataService {
         }
     }
 
+    @DataSource(MultiDataSourceType.Master)
     public void delete(String dataId, String tableId) {
         DataTable table = tableRepo.findOne(tableId);
 
@@ -86,12 +91,14 @@ public class DataService {
         dataRepo.update(statement);
     }
 
+    @DataSource(MultiDataSourceType.Slaves)
     public List<Map<String, Object>> query(QueryModel model) {
         Select select = parseSqlStatement(model.getStatement());
 
         return dataRepo.query(new ParameterStatement(select, model.getParameters()));
     }
 
+    @DataSource(MultiDataSourceType.Slaves)
     public Long queryCount(QueryModel model) {
         Select select = parseSqlStatement(model.getStatement());
 
