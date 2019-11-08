@@ -81,7 +81,9 @@ public class DataService {
     public void delete(String dataId, String tableId) {
         DataTable table = tableRepo.findOne(tableId);
 
-        statementBuilder.delete(table, dataId);
+        ParameterStatement statement = statementBuilder.delete(table, dataId);
+
+        dataRepo.update(statement);
     }
 
     public List<Map<String, Object>> query(QueryModel model) {
@@ -148,13 +150,16 @@ public class DataService {
         }
 
         List<ParameterStatement> statements = new ArrayList<>();
-        statements.add(statementBuilder.insert(table, model.getIncludeColumns(), insertRows));
-        statements.addAll(statementBuilder.update(table, model.getIncludeColumns(), updateRows));
-        statements.add(statementBuilder.delete(table, persistIds));
+        if (insertRows.size() > 0)
+            statements.add(statementBuilder.insert(table, model.getIncludeColumns(), insertRows));
+        if (updateRows.size() > 0)
+            statements.addAll(statementBuilder.update(table, model.getIncludeColumns(), updateRows));
+        if (persistIds.size() > 0)
+            statements.add(statementBuilder.delete(table, persistIds));
         return statements;
     }
 
-    private List<String> fetchDatabase(DataTable table, Map<String, List<String>> conditions) {
+    private List<String> fetchDatabase(DataTable table, Map<String, List<Object>> conditions) {
         ParameterStatement statement = statementBuilder.selectIn(table, conditions);
 
         return dataRepo.query(statement).stream()

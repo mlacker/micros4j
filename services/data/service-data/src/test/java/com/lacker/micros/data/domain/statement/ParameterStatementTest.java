@@ -12,8 +12,8 @@ public class ParameterStatementTest {
         ParameterStatement statement = new ParameterStatement();
         JdbcParameter jdbcParameter = statement.addParameter(1);
 
-        assertEquals(1, statement.getParameters().size());
-        assertEquals("?0", jdbcParameter.toString());
+        assertEquals(1, statement.getParameters().length);
+        assertEquals("?", jdbcParameter.toString());
     }
 
     @Test
@@ -23,7 +23,7 @@ public class ParameterStatementTest {
         statement.addParameter(2);
         JdbcParameter jdbcParameter = statement.addParameter(3);
 
-        assertEquals(3, statement.getParameters().size());
-        assertEquals("?2", jdbcParameter.toString());
+        assertEquals(3, statement.getParameters().length);
+        assertEquals("?", jdbcParameter.toString());
     }
 }

@@ -55,7 +55,7 @@ public class StatementBuilder {
         return statement;
     }
 
-    public ParameterStatement selectIn(DataTable table, Map<String, List<String>> conditions) {
+    public ParameterStatement selectIn(DataTable table, Map<String, List<Object>> conditions) {
         ParameterStatement statement = new ParameterStatement();
 
         SelectExpressionItem selectExpressionItem = new SelectExpressionItem();
@@ -64,7 +64,7 @@ public class StatementBuilder {
         List<SelectItem> selectItems = Collections.singletonList(selectExpressionItem);
 
         Expression leftExpression = null;
-        for (Map.Entry<String, List<String>> entry : conditions.entrySet()) {
+        for (Map.Entry<String, List<Object>> entry : conditions.entrySet()) {
             Column column = getColumn(table.getColumn(entry.getKey()));
             ExpressionList expressionList = new ExpressionList(entry.getValue().stream().map(statement::addParameter).collect(Collectors.toList()));
             InExpression inExpression = new InExpression(column, expressionList);

@@ -26,7 +26,7 @@ public class DataRepositoryImpl implements DataRepository {
 
     @Override
     public <T> T queryForObject(ParameterStatement statement, Class<T> requiredType) {
-        return template.queryForObject(statement.getStatement().toString(), statement.getParameters().toArray(), requiredType);
+        return template.queryForObject(statement.getStatement().toString(), statement.getParameters(), requiredType);
     }
 
     @Override

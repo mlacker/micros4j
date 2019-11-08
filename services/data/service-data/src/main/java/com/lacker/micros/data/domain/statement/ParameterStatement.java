@@ -26,14 +26,14 @@ public class ParameterStatement {
         this.statement = statement;
     }
 
-    public List<Object> getParameters() {
-        return parameters;
+    public Object[] getParameters() {
+        return parameters.toArray();
     }
 
     public JdbcParameter addParameter(Object value) {
         parameters.add(value);
 
-        return new JdbcParameter(parameters.size() - 1, true);
+        return new JdbcParameter(parameters.size() - 1, false);
     }
 
     @Override

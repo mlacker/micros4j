@@ -39,7 +39,7 @@ public class StatementBuilderTest {
                 builder.select(this.table, includeColumns(), this.table.getPrimaryKey(), "1");
 
         Assert.assertEquals(
-                "SELECT `id` AS `ci-ai`, `cn-a1` AS `ci-a1`, `cn-a2` AS `ci-a2` FROM `tn-a` WHERE (`id` = ?0) AND `deleted` = 0",
+                "SELECT `id` AS `ci-ai`, `cn-a1` AS `ci-a1`, `cn-a2` AS `ci-a2` FROM `tn-a` WHERE (`id` = ?) AND `deleted` = 0",
                 statement.toString());
     }
 
@@ -49,13 +49,13 @@ public class StatementBuilderTest {
                 builder.select(this.table, includeColumns(), this.table.getColumn("ci-f1"), "1");
 
         Assert.assertEquals(
-                "SELECT `id` AS `ci-ai`, `cn-a1` AS `ci-a1`, `cn-a2` AS `ci-a2` FROM `tn-a` WHERE (`cn-f1` = ?0) AND `deleted` = 0",
+                "SELECT `id` AS `ci-ai`, `cn-a1` AS `ci-a1`, `cn-a2` AS `ci-a2` FROM `tn-a` WHERE (`cn-f1` = ?) AND `deleted` = 0",
                 statement.toString());
     }
 
     @Test
     public void selectIn() {
-        Map<String, List<String>> conditions = new LinkedHashMap<>();
+        Map<String, List<Object>> conditions = new LinkedHashMap<>();
         conditions.put("ci-ai", Arrays.asList("1", "2", "3"));
         conditions.put("ci-f1", Arrays.asList("1", "2"));
 
@@ -63,7 +63,7 @@ public class StatementBuilderTest {
                 builder.selectIn(this.table, conditions);
 
         Assert.assertEquals(
-                "SELECT `id` AS `ci-ai` FROM `tn-a` WHERE (`id` IN (?0, ?1, ?2) OR `cn-f1` IN (?3, ?4)) AND `deleted` = 0",
+                "SELECT `id` AS `ci-ai` FROM `tn-a` WHERE (`id` IN (?, ?, ?) OR `cn-f1` IN (?, ?)) AND `deleted` = 0",
                 statement.toString());
     }
 
@@ -73,7 +73,7 @@ public class StatementBuilderTest {
                 builder.insert(this.table, includeColumns(), dataMaps());
 
         Assert.assertEquals(
-                "INSERT INTO `tn-a` (`id`, `cn-a1`, `cn-a2`) VALUES (?0, ?1, ?2), (?3, ?4, ?5)",
+                "INSERT INTO `tn-a` (`id`, `cn-a1`, `cn-a2`) VALUES (?, ?, ?), (?, ?, ?)",
                 statement.toString());
     }
 
@@ -83,10 +83,10 @@ public class StatementBuilderTest {
                 builder.update(this.table, includeColumns(), dataMaps());
 
         Assert.assertEquals(
-                "UPDATE `tn-a` SET `cn-a1` = ?1, `cn-a2` = ?2 WHERE `id` = ?0",
+                "UPDATE `tn-a` SET `cn-a1` = ?, `cn-a2` = ? WHERE `id` = ?",
                 statements.get(0).toString());
         Assert.assertEquals(
-                "UPDATE `tn-a` SET `cn-a1` = ?1, `cn-a2` = ?2 WHERE `id` = ?0",
+                "UPDATE `tn-a` SET `cn-a1` = ?, `cn-a2` = ? WHERE `id` = ?",
                 statements.get(1).toString());
     }
 
@@ -96,7 +96,7 @@ public class StatementBuilderTest {
                 builder.delete(this.table, Arrays.asList("1", "2", "3"));
 
         Assert.assertEquals(
-                "UPDATE `tn-a` SET `deleted` = 1 WHERE `id` IN (?0, ?1, ?2)",
+                "UPDATE `tn-a` SET `deleted` = 1 WHERE `id` IN (?, ?, ?)",
                 statement.toString());
     }
 
@@ -106,7 +106,7 @@ public class StatementBuilderTest {
                 builder.delete(this.table, "1");
 
         Assert.assertEquals(
-                "UPDATE `tn-a` SET `deleted` = 1 WHERE `id` IN (?0)",
+                "UPDATE `tn-a` SET `deleted` = 1 WHERE `id` IN (?)",
                 statement.toString());
     }
 

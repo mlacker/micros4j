@@ -7,7 +7,7 @@ public class DataModel {
 
     private String tableId;
     private List<String> includeColumns;
-    private Map<String, List<String>> conditions;
+    private Map<String, List<Object>> conditions;
     private List<Map<String, Object>> dataMaps;
 
     public String getTableId() {
@@ -26,11 +26,11 @@ public class DataModel {
         this.includeColumns = includeColumns;
     }
 
-    public Map<String, List<String>> getConditions() {
+    public Map<String, List<Object>> getConditions() {
         return conditions;
     }
 
-    public void setConditions(Map<String, List<String>> conditions) {
+    public void setConditions(Map<String, List<Object>> conditions) {
         this.conditions = conditions;
     }
 

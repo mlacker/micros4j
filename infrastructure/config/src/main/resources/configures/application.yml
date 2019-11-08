@@ -6,15 +6,18 @@ spring:
       override-system-properties: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${micros.db.url:172.16.10.38}/ms_${micros.application.name}?characterEncoding=utf8&serverTimezone=GMT%2B8&allowMultiQueries=true&useSSL=false
-    username: numysql_root
-    password: '{cipher}d882e29bc3d0f014b308dcd72b787f4474161c5d8ad6bc2d0e6406f8ae9e1b98'
+    url: jdbc:mysql://${micros.datasource.server:localhost}/ms_${micros.application.name}?characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
+    username: micros_all
+    password: '{cipher}31ea4c4f5e727a8cb925cbe563003414861caf86d8cf4b064675e6452a1ba58c'
   jackson:
     default-property-inclusion: non_empty
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   rabbitmq:
     host: 172.16.10.212
+    port: 5673
+    username: admin
+    password: ywkj2019
 eureka:
   instance:
     prefer-ip-address: true
