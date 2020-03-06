@@ -10,10 +10,10 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>shared/core</module>
-        <module>infrastructure/config</module>
-        <module>infrastructure/registry</module>
-        <module>infrastructure/gateway</module>
+        <module>library/core</module>
+        <module>shared/config</module>
+        <module>shared/registry</module>
+        <module>shared/gateway</module>
         <module>services/auth/service-auth</module>
         <module>services/auth/service-auth-api</module>
         <module>services/data/service-data</module>
@@ -23,7 +23,8 @@
     </modules>
 
     <properties>
-        <java.version>1.11</java.version>
+        <java.version>11</java.version>
+        <kotlin.version>1.3.61</kotlin.version>
         <spring-cloud.version>Hoxton.SR2</spring-cloud.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
@@ -37,6 +38,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.lacker.micros</groupId>
+                <artifactId>core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib</artifactId>
