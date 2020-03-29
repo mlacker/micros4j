@@ -11,6 +11,7 @@
 
     <modules>
         <module>library/core</module>
+        <module>library/expression</module>
         <module>shared/config</module>
         <module>shared/registry</module>
         <module>shared/gateway</module>
@@ -18,9 +19,10 @@
         <module>services/auth/service-auth-api</module>
         <module>services/data/service-data</module>
         <module>services/data/service-data-api</module>
+        <module>services/form/service-form</module>
+        <module>services/form/service-form-api</module>
         <module>services/report/service-report</module>
         <module>services/report/service-report-api</module>
-        <module>library/expression</module>
     </modules>
 
     <properties>
