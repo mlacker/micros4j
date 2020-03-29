@@ -16,7 +16,7 @@ Microservice Architecture with Spring Cloud and Docker.
     - [ ] 计算表达式
 - [x] 认证授权
 - [x] 异步消息队列
-- [ ] 数据库读写分离
+- [x] 数据库读写分离
 - [ ] 分布式事务框架
 - [ ] 故障下线
 - [ ] 监控
