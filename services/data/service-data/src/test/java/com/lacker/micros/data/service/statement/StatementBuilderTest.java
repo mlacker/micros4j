@@ -88,6 +88,8 @@ public class StatementBuilderTest {
         Assert.assertEquals(
                 "UPDATE `tn-a` SET `cn-a1` = ?, `cn-a2` = ? WHERE `id` = ?",
                 statements.get(1).toString());
+
+        Assert.assertArrayEquals(new Object[]{"2", "3", "1"}, statements.get(0).getParameters());
     }
 
     @Test
@@ -118,13 +120,13 @@ public class StatementBuilderTest {
         List<Map<String, Object>> dataMaps = new ArrayList<>();
         Map<String, Object> dataMap1 = new HashMap<>();
         dataMap1.put("ci-ai", "1");
-        dataMap1.put("ci-a1", "1");
-        dataMap1.put("ci-a2", "1");
+        dataMap1.put("ci-a1", "2");
+        dataMap1.put("ci-a2", "3");
         dataMaps.add(dataMap1);
         Map<String, Object> dataMap2 = new HashMap<>();
-        dataMap2.put("ci-ai", "2");
-        dataMap2.put("ci-a1", "2");
-        dataMap2.put("ci-a2", "2");
+        dataMap2.put("ci-ai", "4");
+        dataMap2.put("ci-a1", "5");
+        dataMap2.put("ci-a2", "6");
         dataMaps.add(dataMap2);
         return dataMaps;
     }

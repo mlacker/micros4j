@@ -122,14 +122,14 @@ public class StatementBuilder {
         for (Map<String, Object> row : rows) {
             ParameterStatement statement = new ParameterStatement();
 
-            EqualsTo equalsTo = new EqualsTo();
-            equalsTo.setLeftExpression(updatePrimaryColumn);
-            equalsTo.setRightExpression(statement.addParameter(row.get(table.getPrimaryKey().getId())));
-
             List<Expression> expressions = new ArrayList<>();
             for (DataColumn column : columns) {
                 expressions.add(statement.addParameter(row.get(column.getId())));
             }
+
+            EqualsTo equalsTo = new EqualsTo();
+            equalsTo.setLeftExpression(updatePrimaryColumn);
+            equalsTo.setRightExpression(statement.addParameter(row.get(table.getPrimaryKey().getId())));
 
             Update update = new Update();
             update.setTable(getTable(table));
@@ -171,6 +171,10 @@ public class StatementBuilder {
     }
 
     private Column getColumn(DataColumn column) {
+        if (column == null) {
+            throw new IllegalArgumentException("Column is missing");
+        }
+
         return new Column(appendBackQuote(column.getColumnName()));
     }
 
