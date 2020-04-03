@@ -69,6 +69,11 @@
             </dependency>
             <dependency>
                 <groupId>com.lacker.micros</groupId>
+                <artifactId>service-form-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lacker.micros</groupId>
                 <artifactId>service-report-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
