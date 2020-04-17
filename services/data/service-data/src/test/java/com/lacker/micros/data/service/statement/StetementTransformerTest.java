@@ -33,8 +33,8 @@ public class StetementTransformerTest {
                 .build();
 
         TableRepository repo = Mockito.mock(TableRepository.class);
-        doReturn(Optional.of(tableA)).when(repo).find(eq(100L));
-        doReturn(Optional.of(tableB)).when(repo).find(eq(200L));
+        doReturn(tableA).when(repo).find(eq(100L));
+        doReturn(tableB).when(repo).find(eq(200L));
 
         this.transformer = new StetementTransformer(repo);
     }

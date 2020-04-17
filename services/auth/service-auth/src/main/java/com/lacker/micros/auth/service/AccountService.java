@@ -95,8 +95,11 @@ public class AccountService {
     }
 
     private Account find(Long id) {
-        return repo.find(id)
-                .orElseThrow(() -> new NotFoundAppException("User not found"));
+        try{
+            return repo.find(id);
+        } catch (NotFoundAppException ex) {
+            throw new NotFoundAppException("User not found");
+        }
     }
 
     private void save(Account account) {

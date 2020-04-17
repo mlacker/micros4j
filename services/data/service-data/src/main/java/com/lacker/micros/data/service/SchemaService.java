@@ -31,8 +31,7 @@ public class SchemaService {
     }
 
     public TableModel findSchema(Long id) {
-        DataTable table = repo.find(id)
-                .orElseThrow(NotFoundAppException::new);
+        DataTable table = repo.find(id);
 
         return mapper.map(table, TableModel.class);
     }

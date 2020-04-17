@@ -49,7 +49,7 @@ public class DataService {
     public List<DataModel> load(Long dataId, LoadSchemaModel model) {
         List<DataModel> dataModels = new ArrayList<>();
 
-        DataTable tableOfPrimary = tableRepo.findOne(model.getPrimary().getId());
+        DataTable tableOfPrimary = tableRepo.find(model.getPrimary().getId());
         DataModel dataModelOfPrimary = loadForTable(tableOfPrimary, model.getPrimary().getIncludeColumns(), tableOfPrimary.getPrimaryKey(), dataId);
         if (dataModelOfPrimary.getDataMaps().size() == 0) {
             throw new NotFoundAppException();
@@ -57,7 +57,7 @@ public class DataService {
         dataModels.add(dataModelOfPrimary);
 
         for (LoadRelationModel relationModel : model.getRelations()) {
-            DataTable table = tableRepo.findOne(relationModel.getForeignTable().getId());
+            DataTable table = tableRepo.find(relationModel.getForeignTable().getId());
             DataModel dataModel = loadForTable(
                     table,
                     relationModel.getForeignTable().getIncludeColumns(),
@@ -84,7 +84,7 @@ public class DataService {
 
     @DataSource(MultiDataSourceType.Master)
     public void delete(Long dataId, Long tableId) {
-        DataTable table = tableRepo.findOne(tableId);
+        DataTable table = tableRepo.find(tableId);
 
         ParameterStatement statement = statementBuilder.delete(table, dataId);
 
@@ -140,7 +140,7 @@ public class DataService {
     }
 
     private List<ParameterStatement> saveForTable(DataModel model) {
-        DataTable table = tableRepo.findOne(model.getTableId());
+        DataTable table = tableRepo.find(model.getTableId());
         List<Long> persistIds = fetchDatabase(table, model.getConditions());
 
         List<Map<Long, Object>> insertRows = new ArrayList<>();

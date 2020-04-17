@@ -3,6 +3,7 @@ package com.lacker.micros.auth.repository;
 import com.lacker.micros.auth.domain.user.Account;
 import com.lacker.micros.auth.domain.user.AccountRepository;
 import com.lacker.micros.auth.repository.mapper.AccountMapper;
+import com.lacker.micros.domain.exception.NotFoundAppException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -27,8 +28,14 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public Optional<Account> find(Long id) {
-        return Optional.ofNullable(mapper.find(id));
+    public Account find(Long id) {
+        Account account = mapper.find(id);
+
+        if (account == null) {
+            throw new NotFoundAppException();
+        }
+
+        return account;
     }
 
     @Override
