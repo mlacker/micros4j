@@ -5,6 +5,7 @@ import com.lacker.micros.data.domain.schema.TableRepository;
 import com.lacker.micros.data.repository.mapper.ColumnMapper;
 import com.lacker.micros.data.repository.mapper.TableMapper;
 import com.lacker.micros.domain.exception.NotFoundAppException;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class TableRepositoryImpl implements TableRepository {
     }
 
     @Override
-    public DataTable find(Long id) {
+    public DataTable find(@NotNull Long id) {
         DataTable table = tableMapper.find(id);
 
         if (table == null) {
@@ -42,7 +43,7 @@ public class TableRepositoryImpl implements TableRepository {
     }
 
     @Override
-    public void save(DataTable table) {
+    public void save(@NotNull DataTable table) {
 
     }
 }
