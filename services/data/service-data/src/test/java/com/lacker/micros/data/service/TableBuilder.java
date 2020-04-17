@@ -3,6 +3,9 @@ package com.lacker.micros.data.service;
 import com.lacker.micros.data.domain.schema.DataColumn;
 import com.lacker.micros.data.domain.schema.DataTable;
 
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.spy;
+
 public class TableBuilder {
 
     private final DataTable table;
@@ -12,8 +15,8 @@ public class TableBuilder {
     }
 
     public static TableBuilder createTable (Long id, String name) {
-        DataTable table = new DataTable();
-        table.setId(id);
+        DataTable table = spy(DataTable.class);
+        when(table.getId()).thenReturn(id);
         table.setTableName(name);
         return new TableBuilder(table);
     }
@@ -31,8 +34,8 @@ public class TableBuilder {
     }
 
     private DataColumn getColumn(Long id, String name) {
-        DataColumn column = new DataColumn();
-        column.setId(id);
+        DataColumn column = spy(DataColumn.class);
+        when(column.getId()).thenReturn(id);
         column.setColumnName(name);
         return column;
     }

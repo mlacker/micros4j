@@ -17,7 +17,6 @@ public class Account extends EntityImpl implements AggregateRoot{
     }
 
     public Account(String name, String username) {
-        this.setId(SequenceIdGenerator.generateId());
         this.name = name;
         this.username = username;
         this.enabled = true;

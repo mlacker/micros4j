@@ -7,13 +7,13 @@ public abstract class EntityImpl implements Entity {
 
     private Long id;
 
+    protected EntityImpl() {
+        id = SequenceIdGenerator.generateId();
+    }
+
     @Override
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Override
