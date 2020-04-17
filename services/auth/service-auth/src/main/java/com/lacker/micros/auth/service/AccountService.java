@@ -50,7 +50,7 @@ public class AccountService {
         return tokenFactory.createToken(account);
     }
 
-    public AccountModel get(String id) {
+    public AccountModel get(Long id) {
         Account account = find(id);
         return mapper.map(account, AccountModel.class);
     }
@@ -69,32 +69,32 @@ public class AccountService {
         save(account);
     }
 
-    public void delete(String id) {
+    public void delete(Long id) {
         Account account = find(id);
         repo.delete(account);
         publisher.delete(account);
     }
 
-    public void resetPassword(String id) {
+    public void resetPassword(Long id) {
         Account account = find(id);
         String defaultPasswordHash = passwordEncoder.computeHash(Account.DEFAULT_PASSWORD);
         account.setPasswordHash(defaultPasswordHash);
         save(account);
     }
 
-    public void enable(String id) {
+    public void enable(Long id) {
         Account account = find(id);
         account.enable();
         save(account);
     }
 
-    public void disable(String id) {
+    public void disable(Long id) {
         Account account = find(id);
         account.disable();
         save(account);
     }
 
-    private Account find(String id) {
+    private Account find(Long id) {
         return repo.find(id)
                 .orElseThrow(() -> new NotFoundAppException("User not found"));
     }

@@ -29,12 +29,12 @@ public class TableRepositoryImpl implements TableRepository {
     }
 
     @Override
-    public DataTable findOne(String id) {
+    public DataTable findOne(Long id) {
         return find(id).orElseThrow(NotFoundAppException::new);
     }
 
     @Override
-    public Optional<DataTable> find(String id) {
+    public Optional<DataTable> find(Long id) {
         DataTable table = tableMapper.find(id);
 
         if (table != null) {

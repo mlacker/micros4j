@@ -11,26 +11,26 @@ public class TableBuilder {
         this.table = table;
     }
 
-    public static TableBuilder createTable (String id, String name) {
+    public static TableBuilder createTable (Long id, String name) {
         DataTable table = new DataTable();
         table.setId(id);
         table.setTableName(name);
         return new TableBuilder(table);
     }
 
-    public TableBuilder createColumn (String id, String name) {
+    public TableBuilder createColumn (Long id, String name) {
         this.table.getColumns().add(getColumn(id, name));
         return this;
     }
 
-    public TableBuilder createIdColumn (String id) {
+    public TableBuilder createIdColumn (Long id) {
         DataColumn column = getColumn(id, "id");
         column.setPrimaryKey(true);
         this.table.getColumns().add(column);
         return this;
     }
 
-    private DataColumn getColumn(String id, String name) {
+    private DataColumn getColumn(Long id, String name) {
         DataColumn column = new DataColumn();
         column.setId(id);
         column.setColumnName(name);

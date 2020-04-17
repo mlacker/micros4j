@@ -23,47 +23,47 @@ public class StatementBuilderTest {
     public void setUp() {
         this.builder = new StatementBuilder();
 
-        this.table = TableBuilder.createTable("ti-a", "tn-a")
-                .createIdColumn("ci-ai")
-                .createColumn("ci-f1", "cn-f1")
-                .createColumn("ci-a1", "cn-a1")
-                .createColumn("ci-a2", "cn-a2")
-                .createColumn("ci-a3", "cn-a3")
-                .createColumn("ci-ad", "deleted")
+        this.table = TableBuilder.createTable(100L, "tn-a")
+                .createIdColumn(1101L)
+                .createColumn(1102L, "cn-f1")
+                .createColumn(1111L, "cn-a1")
+                .createColumn(1112L, "cn-a2")
+                .createColumn(1113L, "cn-a3")
+                .createColumn(1103L, "deleted")
                 .build();
     }
 
     @Test
     public void selectById() {
         ParameterStatement statement =
-                builder.select(this.table, includeColumns(), this.table.getPrimaryKey(), "1");
+                builder.select(this.table, includeColumns(), this.table.getPrimaryKey(), 1L);
 
         Assert.assertEquals(
-                "SELECT `id` AS `ci-ai`, `cn-a1` AS `ci-a1`, `cn-a2` AS `ci-a2` FROM `tn-a` WHERE (`id` = ?) AND `deleted` = 0",
+                "SELECT `id` AS `1101`, `cn-a1` AS `1111`, `cn-a2` AS `1112` FROM `tn-a` WHERE (`id` = ?) AND `deleted` = 0",
                 statement.toString());
     }
 
     @Test
     public void selectByForeignKey() {
         ParameterStatement statement =
-                builder.select(this.table, includeColumns(), this.table.getColumn("ci-f1"), "1");
+                builder.select(this.table, includeColumns(), this.table.getColumn(1102L), 1L);
 
         Assert.assertEquals(
-                "SELECT `id` AS `ci-ai`, `cn-a1` AS `ci-a1`, `cn-a2` AS `ci-a2` FROM `tn-a` WHERE (`cn-f1` = ?) AND `deleted` = 0",
+                "SELECT `id` AS `1101`, `cn-a1` AS `1111`, `cn-a2` AS `1112` FROM `tn-a` WHERE (`cn-f1` = ?) AND `deleted` = 0",
                 statement.toString());
     }
 
     @Test
     public void selectIn() {
-        Map<String, List<Object>> conditions = new LinkedHashMap<>();
-        conditions.put("ci-ai", Arrays.asList("1", "2", "3"));
-        conditions.put("ci-f1", Arrays.asList("1", "2"));
+        Map<Long, List<Object>> conditions = new LinkedHashMap<>();
+        conditions.put(1101L, Arrays.asList(1L, 2L, 3L));
+        conditions.put(1102L, Arrays.asList(1L, 2L));
 
         ParameterStatement statement =
                 builder.selectIn(this.table, conditions);
 
         Assert.assertEquals(
-                "SELECT `id` AS `ci-ai` FROM `tn-a` WHERE (`id` IN (?, ?, ?) OR `cn-f1` IN (?, ?)) AND `deleted` = 0",
+                "SELECT `id` AS `1101` FROM `tn-a` WHERE (`id` IN (?, ?, ?) OR `cn-f1` IN (?, ?)) AND `deleted` = 0",
                 statement.toString());
     }
 
@@ -89,13 +89,13 @@ public class StatementBuilderTest {
                 "UPDATE `tn-a` SET `cn-a1` = ?, `cn-a2` = ? WHERE `id` = ?",
                 statements.get(1).toString());
 
-        Assert.assertArrayEquals(new Object[]{"2", "3", "1"}, statements.get(0).getParameters());
+        Assert.assertArrayEquals(new Object[]{2L, 3L, 1L}, statements.get(0).getParameters());
     }
 
     @Test
     public void deleteByIds() {
         ParameterStatement statement =
-                builder.delete(this.table, Arrays.asList("1", "2", "3"));
+                builder.delete(this.table, Arrays.asList(1L, 2L, 3L));
 
         Assert.assertEquals(
                 "UPDATE `tn-a` SET `deleted` = 1 WHERE `id` IN (?, ?, ?)",
@@ -105,28 +105,28 @@ public class StatementBuilderTest {
     @Test
     public void delete() {
         ParameterStatement statement =
-                builder.delete(this.table, "1");
+                builder.delete(this.table, 1L);
 
         Assert.assertEquals(
                 "UPDATE `tn-a` SET `deleted` = 1 WHERE `id` IN (?)",
                 statement.toString());
     }
 
-    private List<String> includeColumns() {
-        return Arrays.asList("ci-ai", "ci-a1", "ci-a2");
+    private List<Long> includeColumns() {
+        return Arrays.asList(1101L, 1111L, 1112L);
     }
 
-    private List<Map<String, Object>> dataMaps() {
-        List<Map<String, Object>> dataMaps = new ArrayList<>();
-        Map<String, Object> dataMap1 = new HashMap<>();
-        dataMap1.put("ci-ai", "1");
-        dataMap1.put("ci-a1", "2");
-        dataMap1.put("ci-a2", "3");
+    private List<Map<Long, Object>> dataMaps() {
+        List<Map<Long, Object>> dataMaps = new ArrayList<>();
+        Map<Long, Object> dataMap1 = new HashMap<>();
+        dataMap1.put(1101L, 1L);
+        dataMap1.put(1111L, 2L);
+        dataMap1.put(1112L, 3L);
         dataMaps.add(dataMap1);
-        Map<String, Object> dataMap2 = new HashMap<>();
-        dataMap2.put("ci-ai", "4");
-        dataMap2.put("ci-a1", "5");
-        dataMap2.put("ci-a2", "6");
+        Map<Long, Object> dataMap2 = new HashMap<>();
+        dataMap2.put(1101L, 4L);
+        dataMap2.put(1111L, 5L);
+        dataMap2.put(1112L, 6L);
         dataMaps.add(dataMap2);
         return dataMaps;
     }

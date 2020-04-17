@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface DataRepository {
 
-    List<Map<String, Object>> query(ParameterStatement statement);
+    List<Map<Long, Object>> query(ParameterStatement statement);
 
     <T> T queryForObject(ParameterStatement statement, Class<T> requiredType);
 

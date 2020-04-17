@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface ReportDataClient {
 
     @PostMapping("query")
-    List<Map<String, Object>> query(@RequestBody QueryModel model);
+    List<Map<Long, Object>> query(@RequestBody QueryModel model);
 
     @PostMapping("query-count")
     Long queryCount(@RequestBody QueryModel model);

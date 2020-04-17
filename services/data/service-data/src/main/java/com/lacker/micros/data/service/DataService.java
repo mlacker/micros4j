@@ -46,7 +46,7 @@ public class DataService {
     }
 
     @DataSource(MultiDataSourceType.Slaves)
-    public List<DataModel> load(String dataId, LoadSchemaModel model) {
+    public List<DataModel> load(Long dataId, LoadSchemaModel model) {
         List<DataModel> dataModels = new ArrayList<>();
 
         DataTable tableOfPrimary = tableRepo.findOne(model.getPrimary().getId());
@@ -83,7 +83,7 @@ public class DataService {
     }
 
     @DataSource(MultiDataSourceType.Master)
-    public void delete(String dataId, String tableId) {
+    public void delete(Long dataId, Long tableId) {
         DataTable table = tableRepo.findOne(tableId);
 
         ParameterStatement statement = statementBuilder.delete(table, dataId);
@@ -92,7 +92,7 @@ public class DataService {
     }
 
     @DataSource(MultiDataSourceType.Slaves)
-    public List<Map<String, Object>> query(QueryModel model) {
+    public List<Map<Long, Object>> query(QueryModel model) {
         Select select = parseSqlStatement(model.getStatement());
 
         return dataRepo.query(new ParameterStatement(select, model.getParameters()));
@@ -129,9 +129,9 @@ public class DataService {
         }
     }
 
-    private DataModel loadForTable(DataTable table, List<String> includeColumns, DataColumn conditionColumn, Object conditionValue) {
+    private DataModel loadForTable(DataTable table, List<Long> includeColumns, DataColumn conditionColumn, Object conditionValue) {
         ParameterStatement statement = statementBuilder.select(table, includeColumns, conditionColumn, conditionValue);
-        List<Map<String, Object>> dataMaps = dataRepo.query(statement);
+        List<Map<Long, Object>> dataMaps = dataRepo.query(statement);
 
         DataModel dataModel = new DataModel();
         dataModel.setTableId(table.getId());
@@ -141,12 +141,12 @@ public class DataService {
 
     private List<ParameterStatement> saveForTable(DataModel model) {
         DataTable table = tableRepo.findOne(model.getTableId());
-        List<String> persistIds = fetchDatabase(table, model.getConditions());
+        List<Long> persistIds = fetchDatabase(table, model.getConditions());
 
-        List<Map<String, Object>> insertRows = new ArrayList<>();
-        List<Map<String, Object>> updateRows = new ArrayList<>();
-        for (Map<String, Object> dataMap : model.getDataMaps()) {
-            String id = String.valueOf(dataMap.get(table.getPrimaryKey().getId()));
+        List<Map<Long, Object>> insertRows = new ArrayList<>();
+        List<Map<Long, Object>> updateRows = new ArrayList<>();
+        for (Map<Long, Object> dataMap : model.getDataMaps()) {
+            Long id = (Long) dataMap.get(table.getPrimaryKey().getId());
 
             if (persistIds.contains(id)) {
                 updateRows.add(dataMap);
@@ -166,11 +166,11 @@ public class DataService {
         return statements;
     }
 
-    private List<String> fetchDatabase(DataTable table, Map<String, List<Object>> conditions) {
+    private List<Long> fetchDatabase(DataTable table, Map<Long, List<Object>> conditions) {
         ParameterStatement statement = statementBuilder.selectIn(table, conditions);
 
         return dataRepo.query(statement).stream()
-                .map(m -> String.valueOf(m.get(table.getPrimaryKey().getId())))
+                .map(m -> Long.valueOf(String.valueOf(m.get(table.getPrimaryKey().getId()))))
                 .collect(Collectors.toList());
     }
 }

@@ -1,24 +1,24 @@
 package com.lacker.micros.data.api.model.form.load;
 
 public class LoadRelationModel {
-    private String id;
-    private String primaryColumn;
+    private Long id;
+    private Long primaryColumn;
     private LoadTableModel foreignTable;
-    private String foreignColumn;
+    private Long foreignColumn;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getPrimaryColumn() {
+    public Long getPrimaryColumn() {
         return primaryColumn;
     }
 
-    public void setPrimaryColumn(String primaryColumn) {
+    public void setPrimaryColumn(Long primaryColumn) {
         this.primaryColumn = primaryColumn;
     }
 
@@ -30,11 +30,11 @@ public class LoadRelationModel {
         this.foreignTable = foreignTable;
     }
 
-    public String getForeignColumn() {
+    public Long getForeignColumn() {
         return foreignColumn;
     }
 
-    public void setForeignColumn(String foreignColumn) {
+    public void setForeignColumn(Long foreignColumn) {
         this.foreignColumn = foreignColumn;
     }
 }

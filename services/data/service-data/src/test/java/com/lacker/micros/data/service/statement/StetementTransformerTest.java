@@ -4,6 +4,7 @@ import com.lacker.micros.data.domain.schema.DataTable;
 import com.lacker.micros.data.domain.schema.TableRepository;
 import com.lacker.micros.data.service.TableBuilder;
 import com.lacker.micros.domain.exception.InvalidOperationAppException;
+import com.lacker.micros.domain.exception.InvalidParameterAppException;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
@@ -24,16 +25,16 @@ public class StetementTransformerTest {
 
     @Before
     public void setUp() {
-        DataTable tableA = TableBuilder.createTable("ti-a", "tn-a")
-                .createColumn("ci-a1", "cn-a1")
+        DataTable tableA = TableBuilder.createTable(100L, "tn-a")
+                .createColumn(1111L, "cn-a1")
                 .build();
-        DataTable tableB = TableBuilder.createTable("ti-b", "tn-b")
-                .createColumn("ci-b1", "cn-b1")
+        DataTable tableB = TableBuilder.createTable(200L, "tn-b")
+                .createColumn(1211L, "cn-b1")
                 .build();
 
         TableRepository repo = Mockito.mock(TableRepository.class);
-        doReturn(Optional.of(tableA)).when(repo).find(eq("ti-a"));
-        doReturn(Optional.of(tableB)).when(repo).find(eq("ti-b"));
+        doReturn(Optional.of(tableA)).when(repo).find(eq(100L));
+        doReturn(Optional.of(tableB)).when(repo).find(eq(200L));
 
         this.transformer = new StetementTransformer(repo);
     }
@@ -42,29 +43,29 @@ public class StetementTransformerTest {
     public void tableTest() {
         assertStatement(
                 "SELECT * FROM `tn-a`",
-                "SELECT * FROM `ti-a`");
+                "SELECT * FROM `100`");
     }
 
     @Test
     public void columnTest() {
         assertStatement(
-                "SELECT `ti-a`.`cn-a1` FROM `tn-a` AS `ti-a`",
-                "SELECT `ti-a`.`ci-a1` FROM `ti-a` AS `ti-a`");
+                "SELECT `100`.`cn-a1` FROM `tn-a` AS `100`",
+                "SELECT `100`.`1111` FROM `100` AS `100`");
     }
 
     @Test
     public void joinTest() {
         assertStatement(
-                "SELECT `ti-a`.`cn-a1`, `ti-b`.`cn-b1` " +
-                        "FROM `tn-a` AS `ti-a` " +
-                        "JOIN `tn-b` AS `ti-b` ON `ti-a`.`ci-a1` = `ti-b`.`ci-b1`",
-                "SELECT `ti-a`.`ci-a1`, `ti-b`.`ci-b1`" +
-                        "FROM `ti-a` AS `ti-a` " +
-                        "JOIN `ti-b` AS `ti-b` ON `ti-a`.`ci-a1` = `ti-b`.`ci-b1`"
+                "SELECT `100`.`cn-a1`, `200`.`cn-b1` " +
+                        "FROM `tn-a` AS `100` " +
+                        "JOIN `tn-b` AS `200` ON `100`.`1111` = `200`.`1211`",
+                "SELECT `100`.`1111`, `200`.`1211`" +
+                        "FROM `100` AS `100` " +
+                        "JOIN `200` AS `200` ON `100`.`1111` = `200`.`1211`"
         );
     }
 
-    @Test(expected = InvalidOperationAppException.class)
+    @Test(expected = InvalidParameterAppException.class)
     public void illegalTableTest() {
         assertStatement(
                 "",
@@ -76,7 +77,7 @@ public class StetementTransformerTest {
     public void columnWithoutTableTest() {
         assertStatement(
                 "",
-                "SELECT `ci-a1` FROM `ti-a`"
+                "SELECT `1111` FROM `100`"
         );
     }
 

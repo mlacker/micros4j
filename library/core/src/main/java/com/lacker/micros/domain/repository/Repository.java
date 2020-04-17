@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface Repository<TEntity extends AggregateRoot> {
 
-    Optional<TEntity> find(String id);
+    Optional<TEntity> find(Long id);
 
     void save(TEntity entity);
 }

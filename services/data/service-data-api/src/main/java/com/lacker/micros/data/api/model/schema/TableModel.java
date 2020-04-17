@@ -4,15 +4,15 @@ import java.util.List;
 
 public class TableModel {
 
-    private String id;
+    private Long id;
     private String name;
     private List<ColumnModel> columns;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

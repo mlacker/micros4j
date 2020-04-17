@@ -11,14 +11,12 @@ import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.spyk
-import net.sf.jsqlparser.parser.CCJSqlParser
-import net.sf.jsqlparser.parser.CCJSqlParserUtil
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import kotlin.test.Ignore
-import kotlin.test.assertEquals
 
 @ExtendWith(MockKExtension::class)
 internal class SelectGeneratorTest {
@@ -140,7 +138,7 @@ internal class SelectGeneratorTest {
             }
         }
 
-        @Ignore
+        @Disabled
         fun `select from nested report`() {
             val report3 = spyk(Report(3, "", report, "", ""))
             every { report3.columns } returns listOf(

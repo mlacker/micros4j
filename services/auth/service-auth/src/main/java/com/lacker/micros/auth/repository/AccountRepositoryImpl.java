@@ -27,7 +27,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public Optional<Account> find(String id) {
+    public Optional<Account> find(Long id) {
         return Optional.ofNullable(mapper.find(id));
     }
 

@@ -5,6 +5,7 @@ import com.lacker.micros.data.domain.schema.DataTable;
 import com.lacker.micros.data.domain.schema.TableRepository;
 import com.lacker.micros.data.domain.statement.StatementVisitorAdapter;
 import com.lacker.micros.domain.exception.InvalidOperationAppException;
+import com.lacker.micros.domain.exception.InvalidParameterAppException;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import org.springframework.stereotype.Component;
@@ -44,7 +45,7 @@ public class StetementTransformer extends StatementVisitorAdapter {
     private DataTable getTable(String key) {
         Optional<DataTable> table = tableRepo.find(trimBackQuote(key));
 
-        if (!table.isPresent()) {
+        if (table.isEmpty()) {
             throw new InvalidOperationAppException("Illegal select statement, tableName: " + key);
         }
 
@@ -63,11 +64,16 @@ public class StetementTransformer extends StatementVisitorAdapter {
         return column;
     }
 
-    private String trimBackQuote(String key) {
+    private Long trimBackQuote(String key) {
         // "`table-id`" to "table-id"
         if (key.charAt(0) == '`' && key.charAt(key.length() - 1) == '`') {
             key = key.substring(1, key.length() - 1);
         }
-        return key;
+
+        try {
+            return Long.valueOf(key);
+        } catch (NumberFormatException ex) {
+            throw new InvalidParameterAppException("Illegal key: " + key);
+        }
     }
 }

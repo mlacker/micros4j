@@ -10,5 +10,5 @@ public interface TableMapper {
     @Select("SELECT * FROM data_table")
     List<DataTable> findAll();
 
-    DataTable find(String id);
+    DataTable find(Long id);
 }

@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface FormDataClient {
 
     @GetMapping("load/{id}")
-    List<DataModel> load(@PathVariable String id, LoadSchemaModel model);
+    List<DataModel> load(@PathVariable Long id, LoadSchemaModel model);
 
     @PostMapping("save")
     void save(@RequestBody List<DataModel> models);
 
     @DeleteMapping("delete/{id}")
-    void delete(@PathVariable String id, String tableId);
+    void delete(@PathVariable Long id, Long tableId);
 }

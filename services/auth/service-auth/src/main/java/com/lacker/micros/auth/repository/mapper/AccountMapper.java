@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Update;
 public interface AccountMapper {
 
     @Select("SELECT * FROM account WHERE id = #{id} AND deleted = 0")
-    Account find(String id);
+    Account find(Long id);
 
     @Select("SELECT * FROM account WHERE username = #{username}")
     Account findByUsername(String username);
@@ -22,5 +22,5 @@ public interface AccountMapper {
     void update(Account account);
 
     @Delete("UPDATE account SET deleted = 1 WHERE id = #{id}")
-    void delete(String id);
+    void delete(Long id);
 }

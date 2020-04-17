@@ -2,16 +2,16 @@ package com.lacker.micros.data.api.model.schema;
 
 public class ColumnModel {
 
-    private String id;
+    private Long id;
     private String name;
     private String columnType;
     private boolean primaryKey;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

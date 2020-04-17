@@ -41,7 +41,7 @@ public class AccountPublisher {
     }
 
     public void delete(Account account) {
-        Message<String> message = MessageBuilder
+        Message<Long> message = MessageBuilder
                 .withPayload(account.getId())
                 .build();
 

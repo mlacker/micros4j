@@ -2,7 +2,7 @@ package com.lacker.micros.auth.domain.user;
 
 import com.lacker.micros.domain.entity.AggregateRoot;
 import com.lacker.micros.domain.entity.EntityImpl;
-import com.lacker.micros.domain.infrastructure.id.UUIDGenerator;
+import com.lacker.micros.utils.id.SequenceIdGenerator;
 
 public class Account extends EntityImpl implements AggregateRoot{
 
@@ -17,7 +17,7 @@ public class Account extends EntityImpl implements AggregateRoot{
     }
 
     public Account(String name, String username) {
-        this.setId(UUIDGenerator.sequentialUUIDString());
+        this.setId(SequenceIdGenerator.generateId());
         this.name = name;
         this.username = username;
         this.enabled = true;

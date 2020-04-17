@@ -8,5 +8,5 @@ import java.util.List;
 public interface ColumnMapper {
 
     @Select("SELECT * FROM data_column WHERE table_id = #{tableId}")
-    List<DataColumn> findByTable(String tableId);
+    List<DataColumn> findByTable(Long tableId);
 }
