@@ -5,28 +5,28 @@ import java.util.Map;
 
 public class PaginatedFilter {
 
-    private int index;
+    private int page;
     private int size;
     private String sort;
     private String order;
     private Map<String, String> filters;
 
     public PaginatedFilter() {
-        index = 0;
+        page = 0;
         size = 10;
         filters = new HashMap<>();
     }
 
-    public int getIndex() {
-        return index;
+    public int getPage() {
+        return page;
     }
 
-    public void setIndex(int index) {
-        this.index = index > 0 ? index - 1 : index;
+    public void setPage(int page) {
+        this.page = page > 0 ? page - 1 : page;
     }
 
     public int getStart() {
-        return getIndex() * getSize();
+        return getPage() * getSize();
     }
 
     public int getSize() {

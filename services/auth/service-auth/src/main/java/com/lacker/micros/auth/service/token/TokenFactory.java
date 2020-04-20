@@ -31,7 +31,7 @@ public class TokenFactory {
                 .withIssuedAt(Date.from(currentTime.atZone(ZoneId.systemDefault()).toInstant()))
                 .withExpiresAt(Date.from(currentTime.plusMinutes(properties.getExpires())
                         .atZone(ZoneId.systemDefault()).toInstant()))
-                .withSubject(account.getId())
+                .withSubject(account.getId().toString())
                 .withClaim("app", "micros")
                 .sign(Algorithm.HMAC256(properties.getSigningKey()));
     }

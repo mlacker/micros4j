@@ -22,7 +22,7 @@ public class AccountController {
     }
 
     @GetMapping("{id}")
-    public AccountModel get(@PathVariable String id) {
+    public AccountModel get(@PathVariable Long id) {
         return service.get(id);
     }
 
@@ -37,7 +37,7 @@ public class AccountController {
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable String id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 }

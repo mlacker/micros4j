@@ -4,6 +4,7 @@ import com.lacker.micros.domain.exception.ApplicationException;
 import com.lacker.micros.domain.exception.ForwardHttpException;
 import com.lacker.micros.domain.exception.NotFoundAppException;
 import com.lacker.micros.model.ErrorModel;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -43,12 +44,24 @@ public class ThrowableHandler {
     /**
      * 远程调用异常拦截
      *
-     * @param exception Feign 异常
+     * @param exception Hystrix 异常
      * @return 返回原请求的响应状态码及消息
      */
-    @ExceptionHandler(ForwardHttpException.class)
-    public ResponseEntity<?> feignException(ForwardHttpException exception) {
-        return ResponseEntity.status(exception.status()).body(exception.getMessage());
+    @ExceptionHandler(HystrixRuntimeException.class)
+    public ResponseEntity<?> hystrixException(HystrixRuntimeException exception) {
+        var status = 500;
+        var message = exception.getMessage();
+        var cause = exception.getCause();
+
+        if (cause != null) {
+            if (cause instanceof ForwardHttpException) {
+                status = ((ForwardHttpException) cause).status();
+            }
+
+            message = cause.getMessage();
+        }
+
+        return ResponseEntity.status(status).body(message);
     }
 
     @ExceptionHandler(Throwable.class)

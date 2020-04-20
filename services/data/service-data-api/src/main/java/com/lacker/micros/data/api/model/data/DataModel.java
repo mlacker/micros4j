@@ -5,40 +5,40 @@ import java.util.Map;
 
 public class DataModel {
 
-    private String tableId;
-    private List<String> includeColumns;
-    private Map<String, List<Object>> conditions;
-    private List<Map<String, Object>> dataMaps;
+    private Long tableId;
+    private List<Long> includeColumns;
+    private Map<Long, List<Object>> conditions;
+    private List<Map<Long, Object>> dataMaps;
 
-    public String getTableId() {
+    public Long getTableId() {
         return tableId;
     }
 
-    public void setTableId(String tableId) {
+    public void setTableId(Long tableId) {
         this.tableId = tableId;
     }
 
-    public List<String> getIncludeColumns() {
+    public List<Long> getIncludeColumns() {
         return includeColumns;
     }
 
-    public void setIncludeColumns(List<String> includeColumns) {
+    public void setIncludeColumns(List<Long> includeColumns) {
         this.includeColumns = includeColumns;
     }
 
-    public Map<String, List<Object>> getConditions() {
+    public Map<Long, List<Object>> getConditions() {
         return conditions;
     }
 
-    public void setConditions(Map<String, List<Object>> conditions) {
+    public void setConditions(Map<Long, List<Object>> conditions) {
         this.conditions = conditions;
     }
 
-    public List<Map<String, Object>> getDataMaps() {
+    public List<Map<Long, Object>> getDataMaps() {
         return dataMaps;
     }
 
-    public void setDataMaps(List<Map<String, Object>> dataMaps) {
+    public void setDataMaps(List<Map<Long, Object>> dataMaps) {
         this.dataMaps = dataMaps;
     }
 }

@@ -1,18 +1,20 @@
 package com.lacker.micros.domain.entity;
 
+import com.lacker.micros.utils.id.SequenceIdGenerator;
 import java.util.Objects;
 
+@NoArg
 public abstract class EntityImpl implements Entity {
 
-    private String id;
+    private Long id;
 
-    @Override
-    public String getId() {
-        return id;
+    protected EntityImpl() {
+        id = SequenceIdGenerator.generateId();
     }
 
-    public void setId(String id) {
-        this.id = id;
+    @Override
+    public Long getId() {
+        return id;
     }
 
     @Override
@@ -30,5 +32,12 @@ public abstract class EntityImpl implements Entity {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        EntityImpl clone = (EntityImpl) super.clone();
+        clone.id = SequenceIdGenerator.generateId();
+        return clone;
     }
 }

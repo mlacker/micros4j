@@ -45,7 +45,7 @@ public class DataTable extends EntityImpl implements AggregateRoot {
         isProtected = aProtected;
     }
 
-    public DataColumn getColumn(String columnId) {
+    public DataColumn getColumn(Long columnId) {
         return this.columns.stream().filter(m -> m.getId().equals(columnId)).findAny().orElse(null);
     }
 

@@ -20,8 +20,9 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     @Override
-    public List<Map<String, Object>> query(ParameterStatement statement) {
-        return template.queryForList(statement.getStatement().toString(), statement.getParameters());
+    public List<Map<Long, Object>> query(ParameterStatement statement) {
+        throw new UnsupportedOperationException("Not Implement");
+        // return template.queryForList(statement.getStatement().toString(), statement.getParameters());
     }
 
     @Override

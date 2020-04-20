@@ -11,6 +11,7 @@
 
     <modules>
         <module>library/core</module>
+        <module>library/expression</module>
         <module>shared/config</module>
         <module>shared/registry</module>
         <module>shared/gateway</module>
@@ -18,6 +19,8 @@
         <module>services/auth/service-auth-api</module>
         <module>services/data/service-data</module>
         <module>services/data/service-data-api</module>
+        <module>services/form/service-form</module>
+        <module>services/form/service-form-api</module>
         <module>services/report/service-report</module>
         <module>services/report/service-report-api</module>
     </modules>
@@ -66,6 +69,11 @@
             </dependency>
             <dependency>
                 <groupId>com.lacker.micros</groupId>
+                <artifactId>service-form-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lacker.micros</groupId>
                 <artifactId>service-report-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -78,6 +86,12 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-reflect</artifactId>
                 <version>${kotlin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-test</artifactId>
+                <version>${kotlin.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
@@ -111,6 +125,12 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
+                <groupId>io.mockk</groupId>
+                <artifactId>mockk</artifactId>
+                <version>1.9.3</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>3.3.0</version>
@@ -118,6 +138,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <build>
         <finalName>${project.artifactId}</finalName>
         <pluginManagement>
@@ -133,12 +154,17 @@
                     <version>${kotlin.version}</version>
                     <configuration>
                         <jvmTarget>${java.version}</jvmTarget>
-                        <compilerPlugins>
-                            <plugin>spring</plugin>
-                        </compilerPlugins>
+                        <nowarn>true</nowarn>
                         <args>
                             <arg>-Xjsr305=strict</arg>
                         </args>
+                        <compilerPlugins>
+                            <plugin>spring</plugin>
+                            <plugin>no-arg</plugin>
+                        </compilerPlugins>
+                        <pluginOptions>
+                            <option>no-arg:annotation=com.lacker.micros.domain.entity.NoArg</option>
+                        </pluginOptions>
                     </configuration>
                     <executions>
                         <execution>
@@ -160,6 +186,11 @@
                         <dependency>
                             <groupId>org.jetbrains.kotlin</groupId>
                             <artifactId>kotlin-maven-allopen</artifactId>
+                            <version>${kotlin.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <artifactId>kotlin-maven-noarg</artifactId>
                             <version>${kotlin.version}</version>
                         </dependency>
                     </dependencies>

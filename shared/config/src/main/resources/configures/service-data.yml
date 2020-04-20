@@ -6,9 +6,9 @@ micros:
   datasource:
     general:
       master:
-        url: 'jdbc:mysql://localhost/ms_data?characterEncoding=utf8&serverTimezone=GMT%2B8&allowMultiQueries=true&useSSL=false'
+        url: 'jdbc:mysql://${micros.datasource.server}/ms_data?characterEncoding=utf8&serverTimezone=GMT%2B8&allowMultiQueries=true&useSSL=false'
       slaves:
-        database: localhost/ms_data_read
+        database: ${micros.datasource.server}/ms_data_read
         username: micros_all_read
     defaults:
       url-template: 'jdbc:mysql://${database}?characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false'

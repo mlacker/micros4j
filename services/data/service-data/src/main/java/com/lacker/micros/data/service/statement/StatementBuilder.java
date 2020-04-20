@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Component
 public class StatementBuilder {
 
-    public ParameterStatement select(DataTable table, List<String> includeColumns, DataColumn conditionColumn, Object value) {
+    public ParameterStatement select(DataTable table, List<Long> includeColumns, DataColumn conditionColumn, Object value) {
         ParameterStatement statement = new ParameterStatement();
 
         List<SelectItem> selectItems = table.getColumns().stream()
@@ -55,7 +55,7 @@ public class StatementBuilder {
         return statement;
     }
 
-    public ParameterStatement selectIn(DataTable table, Map<String, List<Object>> conditions) {
+    public ParameterStatement selectIn(DataTable table, Map<Long, List<Object>> conditions) {
         ParameterStatement statement = new ParameterStatement();
 
         SelectExpressionItem selectExpressionItem = new SelectExpressionItem();
@@ -64,7 +64,7 @@ public class StatementBuilder {
         List<SelectItem> selectItems = Collections.singletonList(selectExpressionItem);
 
         Expression leftExpression = null;
-        for (Map.Entry<String, List<Object>> entry : conditions.entrySet()) {
+        for (Map.Entry<Long, List<Object>> entry : conditions.entrySet()) {
             Column column = getColumn(table.getColumn(entry.getKey()));
             ExpressionList expressionList = new ExpressionList(entry.getValue().stream().map(statement::addParameter).collect(Collectors.toList()));
             InExpression inExpression = new InExpression(column, expressionList);
@@ -82,14 +82,14 @@ public class StatementBuilder {
         return statement;
     }
 
-    public ParameterStatement insert(DataTable table, List<String> includeColumns, List<Map<String, Object>> rows) {
+    public ParameterStatement insert(DataTable table, List<Long> includeColumns, List<Map<Long, Object>> rows) {
         List<DataColumn> columns = table.getColumns().stream()
                 .filter(m -> includeColumns.contains(m.getId()))
                 .collect(Collectors.toList());
 
         ParameterStatement statement = new ParameterStatement();
         MultiExpressionList multiExpressionList = new MultiExpressionList();
-        for (Map<String, Object> row : rows) {
+        for (Map<Long, Object> row : rows) {
             List<Expression> expressions = new ArrayList<>();
             for (DataColumn column : columns) {
                 Object value = row.get(column.getId());
@@ -111,7 +111,7 @@ public class StatementBuilder {
         return statement;
     }
 
-    public List<ParameterStatement> update(DataTable table, List<String> includeColumns, List<Map<String, Object>> rows) {
+    public List<ParameterStatement> update(DataTable table, List<Long> includeColumns, List<Map<Long, Object>> rows) {
         List<ParameterStatement> statements = new ArrayList<>();
         List<DataColumn> columns = table.getColumns().stream()
                 .filter(m -> !m.equals(table.getPrimaryKey()) && includeColumns.contains(m.getId()))
@@ -119,7 +119,7 @@ public class StatementBuilder {
         Column updatePrimaryColumn = getColumn(table.getPrimaryKey());
         List<Column> updateColumns = columns.stream().map(this::getColumn).collect(Collectors.toList());
 
-        for (Map<String, Object> row : rows) {
+        for (Map<Long, Object> row : rows) {
             ParameterStatement statement = new ParameterStatement();
 
             List<Expression> expressions = new ArrayList<>();
@@ -144,7 +144,7 @@ public class StatementBuilder {
         return statements;
     }
 
-    public ParameterStatement delete(DataTable table, List<String> rows) {
+    public ParameterStatement delete(DataTable table, List<Long> rows) {
         ParameterStatement statement = new ParameterStatement();
 
         Column idColumn = getColumn(table.getPrimaryKey());
@@ -162,7 +162,7 @@ public class StatementBuilder {
         return statement;
     }
 
-    public ParameterStatement delete(DataTable table, String id) {
+    public ParameterStatement delete(DataTable table, Long id) {
         return delete(table, Collections.singletonList(id));
     }
 
@@ -176,6 +176,10 @@ public class StatementBuilder {
         }
 
         return new Column(appendBackQuote(column.getColumnName()));
+    }
+
+    private String appendBackQuote(Long id) {
+        return appendBackQuote(id.toString());
     }
 
     private String appendBackQuote(String text) {

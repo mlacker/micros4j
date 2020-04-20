@@ -5,6 +5,7 @@ import com.lacker.micros.data.domain.schema.TableRepository;
 import com.lacker.micros.data.repository.mapper.ColumnMapper;
 import com.lacker.micros.data.repository.mapper.TableMapper;
 import com.lacker.micros.domain.exception.NotFoundAppException;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,23 +30,20 @@ public class TableRepositoryImpl implements TableRepository {
     }
 
     @Override
-    public DataTable findOne(String id) {
-        return find(id).orElseThrow(NotFoundAppException::new);
-    }
-
-    @Override
-    public Optional<DataTable> find(String id) {
+    public DataTable find(@NotNull Long id) {
         DataTable table = tableMapper.find(id);
 
-        if (table != null) {
-            table.setColumns(columnMapper.findByTable(id));
+        if (table == null) {
+            throw new NotFoundAppException();
         }
 
-        return Optional.ofNullable(table);
+        table.setColumns(columnMapper.findByTable(id));
+
+        return table;
     }
 
     @Override
-    public void save(DataTable table) {
+    public void save(@NotNull DataTable table) {
 
     }
 }

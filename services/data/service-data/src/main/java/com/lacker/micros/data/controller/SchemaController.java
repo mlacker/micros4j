@@ -25,7 +25,7 @@ public class SchemaController implements SchemaClient {
     }
 
     @Override
-    public TableModel findSchema(String id) {
+    public TableModel findSchema(Long id) {
         return service.findSchema(id);
     }
 }

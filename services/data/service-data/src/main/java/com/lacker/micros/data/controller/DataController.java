@@ -23,7 +23,7 @@ public class DataController implements FormDataClient, ReportDataClient {
     }
 
     @Override
-    public List<DataModel> load(String id, LoadSchemaModel model) {
+    public List<DataModel> load(Long id, LoadSchemaModel model) {
         return service.load(id, model);
     }
 
@@ -33,12 +33,12 @@ public class DataController implements FormDataClient, ReportDataClient {
     }
 
     @Override
-    public void delete(String id, String tableId) {
+    public void delete(Long id, Long tableId) {
         service.delete(id, tableId);
     }
 
     @Override
-    public List<Map<String, Object>> query(QueryModel model) {
+    public List<Map<Long, Object>> query(QueryModel model) {
         return service.query(model);
     }
 

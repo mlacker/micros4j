@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface SchemaClient {
 
     @GetMapping("{id}")
-    TableModel findSchema(@PathVariable String id);
+    TableModel findSchema(@PathVariable Long id);
 }
