@@ -154,12 +154,17 @@
                     <version>${kotlin.version}</version>
                     <configuration>
                         <jvmTarget>${java.version}</jvmTarget>
-                        <compilerPlugins>
-                            <plugin>spring</plugin>
-                        </compilerPlugins>
+                        <nowarn>true</nowarn>
                         <args>
                             <arg>-Xjsr305=strict</arg>
                         </args>
+                        <compilerPlugins>
+                            <plugin>spring</plugin>
+                            <plugin>no-arg</plugin>
+                        </compilerPlugins>
+                        <pluginOptions>
+                            <option>no-arg:annotation=com.lacker.micros.domain.entity.NoArg</option>
+                        </pluginOptions>
                     </configuration>
                     <executions>
                         <execution>
@@ -181,6 +186,11 @@
                         <dependency>
                             <groupId>org.jetbrains.kotlin</groupId>
                             <artifactId>kotlin-maven-allopen</artifactId>
+                            <version>${kotlin.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <artifactId>kotlin-maven-noarg</artifactId>
                             <version>${kotlin.version}</version>
                         </dependency>
                     </dependencies>

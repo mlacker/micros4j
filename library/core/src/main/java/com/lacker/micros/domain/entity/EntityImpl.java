@@ -3,6 +3,7 @@ package com.lacker.micros.domain.entity;
 import com.lacker.micros.utils.id.SequenceIdGenerator;
 import java.util.Objects;
 
+@NoArg
 public abstract class EntityImpl implements Entity {
 
     private Long id;
