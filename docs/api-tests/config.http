@@ -1,0 +1,6 @@
+POST http://localhost:8888/encrypt
+Content-Type: text/plain
+
+p@ssword
+
+###

@@ -1,0 +1,25 @@
+GET http://localhost:8300/defines?page=1&size=10&filters[searchString]=for
+
+###
+
+GET http://localhost:8300/defines
+
+###
+
+GET http://localhost:8300/defines/1363765002639118341
+
+###
+
+POST http://localhost:8300/defines
+Content-Type: application/json
+
+{
+  "name": "form",
+  "form": {}
+}
+
+###
+
+DELETE http://localhost:8300/defines/1362675670825820160
+
+###

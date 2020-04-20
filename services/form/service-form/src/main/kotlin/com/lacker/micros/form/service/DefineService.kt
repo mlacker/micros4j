@@ -4,7 +4,6 @@ import com.lacker.micros.domain.entity.PaginatedFilter
 import com.lacker.micros.form.api.model.define.DefineModel
 import com.lacker.micros.form.domain.define.Define
 import com.lacker.micros.form.domain.define.DefineRepository
-import org.modelmapper.ModelMapper
 import org.springframework.cache.annotation.CacheConfig
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
@@ -15,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 @CacheConfig(cacheNames = ["form-defines"])
 class DefineService(
         private val repo: DefineRepository,
-        private val mapper: ModelMapper
+        private val formService: FormService
 ) {
 
     fun findByFilter(filter: PaginatedFilter): List<Define> {
@@ -29,19 +28,17 @@ class DefineService(
     @Cacheable(key = "#id")
     fun find(id: Long): DefineModel {
         val define = repo.find(id)
+        val formModel = formService.find(define.formId)
 
-        val model = mapper.map(define, DefineModel::class.java)
-
-        // TODO get form component
-        return model
+        return DefineModel(define.id, define.name, formModel)
     }
 
     @CacheEvict(key = "#model.id")
     @Transactional(rollbackFor = [Exception::class])
     fun save(model: DefineModel) {
         val define = Define(model.name, model.form.id)
-        // val define = Define()
 
+        formService.save(model.form)
         repo.save(define)
     }
 
@@ -50,7 +47,7 @@ class DefineService(
     fun delete(id: Long) {
         val define = repo.find(id)
 
-        // TODO formService.delete(define.formId)
+        formService.delete(define.formId)
         repo.delete(id)
     }
 }

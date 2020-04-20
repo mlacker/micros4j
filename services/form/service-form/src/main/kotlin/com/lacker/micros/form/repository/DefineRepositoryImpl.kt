@@ -22,5 +22,5 @@ class DefineRepositoryImpl(private val mapper: DefineMapper) : DefineRepository 
 
     override fun findOrderByIdDesc() = mapper.findOrderByIdDesc()
 
-    override fun existsByIdNotAndName(id: String, name: String) = mapper.countByIdNotAndName(id, name) > 0
+    override fun existsByIdNotAndName(id: Long, name: String) = mapper.countByIdNotAndName(id, name) > 0
 }

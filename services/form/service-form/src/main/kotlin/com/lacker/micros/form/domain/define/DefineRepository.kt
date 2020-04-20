@@ -9,7 +9,7 @@ interface DefineRepository: Repository<Define> {
 
     fun findOrderByIdDesc(): List<Define>
 
-    fun existsByIdNotAndName(id: String, name: String): Boolean
+    fun existsByIdNotAndName(id: Long, name: String): Boolean
 
     fun delete(id: Long)
 }

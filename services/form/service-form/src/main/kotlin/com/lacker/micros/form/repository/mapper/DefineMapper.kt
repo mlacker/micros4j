@@ -15,18 +15,14 @@ interface DefineMapper {
     @Update("UPDATE define SET name = #{name} WHERE id = #{id}")
     fun update(entity: Define)
 
-    @Delete("DELETE define WHERE id = #{id}")
+    @Delete("DELETE FROM define WHERE id = #{id}")
     fun delete(id: Long)
 
-    // TODO searchString
-    @Select("SELECT * FROM define ",
-            "WHERE (#{filters.searchString} IS NULL OR name LIKE '%#{filters.searchString}%') ",
-            "ORDER BY id DESC LIMIT #{start}, #{size}")
     fun findByFilter(filter: PaginatedFilter): List<Define>
 
     @Select("SELECT * FROM define ORDER BY id DESC")
     fun findOrderByIdDesc(): List<Define>
 
     @Select("SELECT COUNT(*) FROM define WHERE id <> #{id} AND name = #{name}")
-    fun countByIdNotAndName(id: String, name: String): Long
+    fun countByIdNotAndName(id: Long, name: String): Long
 }

@@ -22,6 +22,6 @@ class DefineController(
     @PostMapping
     fun save(@RequestBody model: DefineModel) = service.save(model)
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     fun delete(@PathVariable id: Long) = service.delete(id)
 }
