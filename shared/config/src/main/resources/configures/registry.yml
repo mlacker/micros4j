@@ -1,6 +1,9 @@
 server:
   port: 8761
 eureka:
+  server:
+    eviction-interval-timer-in-ms: 10000
+    response-cache-update-interval-ms: 3000
   client:
     register-with-eureka: false
     fetch-registry: false

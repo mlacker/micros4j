@@ -21,7 +21,10 @@ spring:
 eureka:
   instance:
     prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
   client:
+    registry-fetch-interval-seconds: 10
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
 feign:
@@ -35,7 +38,8 @@ hystrix:
           thread:
             timeoutInMilliseconds: 3000
 ribbon:
-  ConnectTimeout: 1000
+  ServerListRefreshInterval: 2000
+  ConnectTimeout: 500
   ReadTimeout: 1000
   OkToRetryOnAllOperations: false
   MaxAutoRetries: 1
