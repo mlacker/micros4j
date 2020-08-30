@@ -17,7 +17,7 @@ public class FeignConfig {
         return (methodKey, response) -> {
             String message = "";
             try {
-                message = Util.toString(response.body().asReader());
+                message = Util.toString(response.body().asReader(Util.UTF_8));
             } catch (IOException ignored) {
             }
             return new ForwardHttpException(response.status(), message);
