@@ -1,32 +1,26 @@
-package com.lacker.micros.utils.id;
+package com.mlacker.micros.utils.id
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicLong
 
-public class SequenceIdGenerator implements IdGenerator<Long> {
+class SequenceIdGenerator : IdGenerator<Long> {
+    private val sequence = AtomicLong()
 
-    private static final SequenceIdGenerator INSTANCE = new SequenceIdGenerator();
-    private static final long BASE_TIMESTAMP = 1262275200000L;
+    private val timestamp get() = System.currentTimeMillis() - BASE_TIMESTAMP and 0x01FFFFFFFFFFL
 
-    public static Long generateId() {
-        return INSTANCE.generate();
-    }
+    private val host = hashCode().toLong()
+        get() = field and 0x03FF
 
-    private final AtomicLong sequence = new AtomicLong();
-    private final long host = hashCode();
+    private fun getSequence() = sequence.getAndIncrement() and 0x0FFF
 
-    public Long generate() {
-        return (getTimestamp() << 22) | (getHost() << 12) | getSequence();
-    }
+    override fun generate() = timestamp shl 22 or (host shl 12) or getSequence()
 
-    private long getTimestamp() {
-        return (System.currentTimeMillis() - BASE_TIMESTAMP) & 0x01FFFFFFFFFFL;
-    }
+    companion object {
+        private val INSTANCE = SequenceIdGenerator()
+        private const val BASE_TIMESTAMP = 1262275200000L
 
-    private long getHost() {
-        return host & 0x03FF;
-    }
-
-    private long getSequence() {
-        return sequence.getAndIncrement() & 0x0FFF;
+        @JvmStatic
+        fun generateId(): Long {
+            return INSTANCE.generate()
+        }
     }
 }

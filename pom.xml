@@ -168,7 +168,7 @@
                             <plugin>no-arg</plugin>
                         </compilerPlugins>
                         <pluginOptions>
-                            <option>no-arg:annotation=com.lacker.micros.domain.entity.NoArg</option>
+                            <option>no-arg:annotation=com.mlacker.micros.domain.annotation.NoArg</option>
                         </pluginOptions>
                     </configuration>
                     <executions>
@@ -178,6 +178,9 @@
                             <goals>
                                 <goal>compile</goal>
                             </goals>
+                            <configuration>
+                                <sourceDirs>${project.basedir}/src/main/kotlin</sourceDirs>
+                            </configuration>
                         </execution>
                         <execution>
                             <id>test-compile</id>
@@ -185,6 +188,9 @@
                             <goals>
                                 <goal>test-compile</goal>
                             </goals>
+                            <configuration>
+                                <sourceDirs>${project.basedir}/src/test/kotlin</sourceDirs>
+                            </configuration>
                         </execution>
                     </executions>
                     <dependencies>
@@ -199,6 +205,35 @@
                             <version>${kotlin.version}</version>
                         </dependency>
                     </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                    <executions>
+                        <execution>
+                            <id>default-compile</id>
+                            <phase>none</phase>
+                        </execution>
+                        <execution>
+                            <id>default-testCompile</id>
+                            <phase>none</phase>
+                        </execution>
+                        <execution>
+                            <id>java-compile</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>java-test-compile</id>
+                            <phase>test-compile</phase>
+                            <goals>
+                                <goal>testCompile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

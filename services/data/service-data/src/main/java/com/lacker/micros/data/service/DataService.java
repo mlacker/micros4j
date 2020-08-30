@@ -13,7 +13,7 @@ import com.lacker.micros.data.domain.schema.TableRepository;
 import com.lacker.micros.data.domain.statement.ParameterStatement;
 import com.lacker.micros.data.service.statement.StetementTransformer;
 import com.lacker.micros.data.service.statement.StatementBuilder;
-import com.lacker.micros.domain.exception.NotFoundAppException;
+import com.mlacker.micros.domain.exception.NotFoundAppException;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;

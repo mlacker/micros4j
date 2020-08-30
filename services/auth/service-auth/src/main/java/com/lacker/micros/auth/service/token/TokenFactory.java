@@ -3,7 +3,7 @@ package com.lacker.micros.auth.service.token;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.lacker.micros.auth.domain.user.Account;
-import com.lacker.micros.config.properties.TokenProperties;
+import com.mlacker.micros.config.properties.TokenProperties;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -31,7 +31,7 @@ public class TokenFactory {
                 .withIssuedAt(Date.from(currentTime.atZone(ZoneId.systemDefault()).toInstant()))
                 .withExpiresAt(Date.from(currentTime.plusMinutes(properties.getExpires())
                         .atZone(ZoneId.systemDefault()).toInstant()))
-                .withSubject(account.getId().toString())
+                .withSubject(String.valueOf(account.getId()))
                 .withClaim("app", "micros")
                 .sign(Algorithm.HMAC256(properties.getSigningKey()));
     }

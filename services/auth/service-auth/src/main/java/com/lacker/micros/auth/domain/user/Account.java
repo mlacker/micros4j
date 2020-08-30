@@ -1,8 +1,7 @@
 package com.lacker.micros.auth.domain.user;
 
-import com.lacker.micros.domain.entity.AggregateRoot;
-import com.lacker.micros.domain.entity.EntityImpl;
-import com.lacker.micros.utils.id.SequenceIdGenerator;
+import com.mlacker.micros.domain.entity.AggregateRoot;
+import com.mlacker.micros.domain.entity.EntityImpl;
 
 public class Account extends EntityImpl implements AggregateRoot{
 
@@ -13,10 +12,8 @@ public class Account extends EntityImpl implements AggregateRoot{
     private String passwordHash;
     private boolean enabled;
 
-    private Account() {
-    }
-
-    public Account(String name, String username) {
+    public Account(long id, String name, String username) {
+        super(id);
         this.name = name;
         this.username = username;
         this.enabled = true;

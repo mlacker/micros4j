@@ -1,6 +1,6 @@
 package com.lacker.micros.form.repository.mapper
 
-import com.lacker.micros.domain.entity.PaginatedFilter
+import com.mlacker.micros.domain.entity.PaginatedFilter
 import com.lacker.micros.form.domain.define.Define
 import org.apache.ibatis.annotations.*
 

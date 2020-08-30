@@ -1,19 +1,6 @@
-package com.lacker.micros.domain.exception;
+package com.mlacker.micros.domain.exception
 
 /**
  * 无效的操作异常
  */
-public class InvalidOperationAppException extends ApplicationException {
-
-    public InvalidOperationAppException() {
-        super("无效的操作");
-    }
-
-    public InvalidOperationAppException(String message) {
-        super(message);
-    }
-
-    public InvalidOperationAppException(String message, Throwable cause) {
-        super(message, cause);
-    }
-}
+class InvalidOperationAppException @JvmOverloads constructor(message: String = "无效的操作", cause: Throwable? = null) : ApplicationException(message, cause)

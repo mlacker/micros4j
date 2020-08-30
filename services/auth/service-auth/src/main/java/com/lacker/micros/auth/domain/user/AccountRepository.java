@@ -1,6 +1,6 @@
 package com.lacker.micros.auth.domain.user;
 
-import com.lacker.micros.domain.repository.Repository;
+import com.mlacker.micros.domain.repository.Repository;
 
 import java.util.Optional;
 

@@ -3,7 +3,6 @@ package com.lacker.micros.data.service;
 import com.lacker.micros.data.api.model.schema.TableModel;
 import com.lacker.micros.data.domain.schema.DataTable;
 import com.lacker.micros.data.domain.schema.TableRepository;
-import com.lacker.micros.domain.exception.NotFoundAppException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;

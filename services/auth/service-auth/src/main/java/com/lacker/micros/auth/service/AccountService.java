@@ -6,10 +6,10 @@ import com.lacker.micros.auth.domain.user.AccountRepository;
 import com.lacker.micros.auth.model.user.LoginModel;
 import com.lacker.micros.auth.service.token.TokenFactory;
 import com.lacker.micros.auth.stream.publisher.AccountPublisher;
-import com.lacker.micros.domain.exception.InvalidOperationAppException;
-import com.lacker.micros.domain.exception.InvalidParameterAppException;
-import com.lacker.micros.domain.exception.NotFoundAppException;
-import com.lacker.micros.utils.encrypt.Md5Utils;
+import com.mlacker.micros.domain.exception.InvalidOperationAppException;
+import com.mlacker.micros.domain.exception.InvalidParameterAppException;
+import com.mlacker.micros.domain.exception.NotFoundAppException;
+import com.mlacker.micros.utils.encrypt.Md5Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -56,7 +56,7 @@ public class AccountService {
     }
 
     public void create(AccountModel model) {
-        Account account = new Account(model.getName(), model.getUsername());
+        Account account = mapper.map(model, Account.class);
         String defaultPasswordHash = passwordEncoder.computeHash(Account.DEFAULT_PASSWORD);
         account.setPasswordHash(defaultPasswordHash);
         repo.create(account);

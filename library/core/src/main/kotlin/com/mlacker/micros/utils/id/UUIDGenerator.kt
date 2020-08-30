@@ -1,31 +1,28 @@
-package com.lacker.micros.utils.id;
+package com.mlacker.micros.utils.id
 
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*
+import java.util.concurrent.atomic.AtomicInteger
 
-public class UUIDGenerator implements IdGenerator<String> {
+class UUIDGenerator : IdGenerator<String> {
 
-    private static final UUIDGenerator INSTANCE = new UUIDGenerator();
+    private val counter = AtomicInteger()
 
-    public static String generateId() {
-        return INSTANCE.generate();
+    override fun generate() = generateUUID().toString().toUpperCase()
+
+    private fun generateUUID(): UUID {
+        val mostSignificantBits = System.currentTimeMillis() shl 20 or count.toLong()
+        val leastSignificantBits = UUID.randomUUID().leastSignificantBits
+        return UUID(mostSignificantBits, leastSignificantBits)
     }
 
-    private final AtomicInteger counter = new AtomicInteger();
+    private val count: Int
+        get() = counter.getAndIncrement() and 0x0FFF
 
-    @Override
-    public String generate() {
-        return generateUUID().toString().toUpperCase();
-    }
+    companion object {
+        private val INSTANCE = UUIDGenerator()
 
-    private UUID generateUUID() {
-        long mostSignificantBits = (System.currentTimeMillis() << 20) | (getCount());
-        long leastSignificantBits = UUID.randomUUID().getLeastSignificantBits();
-
-        return new UUID(mostSignificantBits, leastSignificantBits);
-    }
-
-    private int getCount() {
-        return counter.getAndIncrement() & 0x0FFF;
+        fun generateId(): String {
+            return INSTANCE.generate()
+        }
     }
 }

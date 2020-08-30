@@ -1,6 +1,6 @@
 package com.lacker.micros.form.service
 
-import com.lacker.micros.domain.entity.PaginatedFilter
+import com.mlacker.micros.domain.entity.PaginatedFilter
 import com.lacker.micros.form.api.model.define.DefineModel
 import com.lacker.micros.form.domain.define.Define
 import com.lacker.micros.form.domain.define.DefineRepository
@@ -36,7 +36,7 @@ class DefineService(
     @CacheEvict(key = "#model.id")
     @Transactional(rollbackFor = [Exception::class])
     fun save(model: DefineModel) {
-        val define = Define(model.name, model.form.id)
+        val define = Define(1, model.name, model.form.id)
 
         formService.save(model.form)
         repo.save(define)

@@ -1,29 +1,12 @@
-package com.lacker.micros.domain.exception;
+package com.mlacker.micros.domain.exception
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*
 
 /**
  * 外套异常
  */
-public class WrapperAppException extends ApplicationException {
+class WrapperAppException(throwable: Throwable) : ApplicationException(throwable.message, throwable) {
+    var data: MutableMap<String, Any> = LinkedHashMap()
 
-    private final Map<String, Object> data = new LinkedHashMap<>();
-
-    public WrapperAppException(Throwable throwable) {
-        super(throwable.getMessage(), throwable);
-    }
-
-    @Override
-    public StackTraceElement[] getStackTrace() {
-        return super.getCause().getStackTrace();
-    }
-
-    public Map<String, Object> getData() {
-        return data;
-    }
-
-    public void addData(String key, String value) {
-        data.put(key, value);
-    }
+    override fun getStackTrace(): Array<StackTraceElement> = cause!!.stackTrace
 }

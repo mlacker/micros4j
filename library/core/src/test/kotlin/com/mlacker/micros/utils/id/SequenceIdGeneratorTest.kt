@@ -1,8 +1,8 @@
-package com.lacker.micros.utils.id
+package com.mlacker.micros.utils.id
 
 import org.junit.jupiter.api.Test
 
-internal class SequenceIdGeneratorTest {
+class SequenceIdGeneratorTest {
 
     private val generator: IdGenerator<Long> = SequenceIdGenerator()
 

@@ -1,7 +1,7 @@
 package com.lacker.micros.data.domain.schema;
 
-import com.lacker.micros.domain.entity.AggregateRoot;
-import com.lacker.micros.domain.entity.EntityImpl;
+import com.mlacker.micros.domain.entity.AggregateRoot;
+import com.mlacker.micros.domain.entity.EntityImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,10 @@ public class DataTable extends EntityImpl implements AggregateRoot {
     private String tableName;
     private List<DataColumn> columns = new ArrayList<>();
     private boolean isProtected;
+
+    public DataTable(long id) {
+        super(id);
+    }
 
     public String getName() {
         return name;
@@ -46,7 +50,7 @@ public class DataTable extends EntityImpl implements AggregateRoot {
     }
 
     public DataColumn getColumn(Long columnId) {
-        return this.columns.stream().filter(m -> m.getId().equals(columnId)).findAny().orElse(null);
+        return this.columns.stream().filter(m -> columnId.equals(m.getId())).findAny().orElse(null);
     }
 
     private DataColumn getColumnByName(String columnName) {

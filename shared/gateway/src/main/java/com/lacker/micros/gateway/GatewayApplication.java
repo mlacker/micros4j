@@ -1,6 +1,6 @@
 package com.lacker.micros.gateway;
 
-import com.lacker.micros.config.properties.TokenProperties;
+import com.mlacker.micros.config.properties.TokenProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

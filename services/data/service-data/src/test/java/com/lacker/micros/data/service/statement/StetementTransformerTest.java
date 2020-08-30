@@ -3,16 +3,13 @@ package com.lacker.micros.data.service.statement;
 import com.lacker.micros.data.domain.schema.DataTable;
 import com.lacker.micros.data.domain.schema.TableRepository;
 import com.lacker.micros.data.service.TableBuilder;
-import com.lacker.micros.domain.exception.InvalidOperationAppException;
-import com.lacker.micros.domain.exception.InvalidParameterAppException;
+import com.mlacker.micros.domain.exception.InvalidParameterAppException;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

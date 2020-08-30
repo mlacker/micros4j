@@ -1,13 +1,14 @@
 package com.lacker.micros.form.domain.component
 
-import com.lacker.micros.domain.entity.EntityImpl
+import com.mlacker.micros.domain.entity.EntityImpl
 
 open class Component(
+        id: Long,
         var name: String,
         val type: String,
-        var properties: String
+        var properties: String,
         // val archive: string,
-) : EntityImpl(), Cloneable {
+) : EntityImpl(id), Cloneable {
 
     var parentId: Long = 0
 

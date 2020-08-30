@@ -1,6 +1,6 @@
 package com.lacker.micros.form.domain.component
 
-import com.lacker.micros.domain.entity.AggregateRoot
+import com.mlacker.micros.domain.entity.AggregateRoot
 
 class FormComponent(
         name: String, properties: String

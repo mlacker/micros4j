@@ -3,7 +3,7 @@ package com.lacker.micros.auth.repository;
 import com.lacker.micros.auth.domain.user.Account;
 import com.lacker.micros.auth.domain.user.AccountRepository;
 import com.lacker.micros.auth.repository.mapper.AccountMapper;
-import com.lacker.micros.domain.exception.NotFoundAppException;
+import com.mlacker.micros.domain.exception.NotFoundAppException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 
@@ -28,8 +28,9 @@ public class AccountRepositoryImpl implements AccountRepository {
         mapper.delete(account.getId());
     }
 
+    @NotNull
     @Override
-    public Account find(@NotNull Long id) {
+    public Account find(long id) {
         Account account = mapper.find(id);
 
         if (account == null) {

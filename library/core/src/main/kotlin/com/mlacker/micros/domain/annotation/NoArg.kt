@@ -1,4 +1,3 @@
-package com.lacker.micros.domain.entity;
+package com.mlacker.micros.domain.annotation
 
-public @interface NoArg {
-}
+annotation class NoArg 

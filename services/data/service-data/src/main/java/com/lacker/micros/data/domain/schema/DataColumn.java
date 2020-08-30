@@ -1,6 +1,6 @@
 package com.lacker.micros.data.domain.schema;
 
-import com.lacker.micros.domain.entity.EntityImpl;
+import com.mlacker.micros.domain.entity.EntityImpl;
 
 public class DataColumn extends EntityImpl {
 
@@ -10,6 +10,10 @@ public class DataColumn extends EntityImpl {
     private ColumnType columnType;
     private boolean primaryKey = false;
     private boolean isProtected = false;
+
+    public DataColumn(long id) {
+        super(id);
+    }
 
     public String getName() {
         return name;

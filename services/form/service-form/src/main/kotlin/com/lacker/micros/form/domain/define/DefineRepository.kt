@@ -1,7 +1,7 @@
 package com.lacker.micros.form.domain.define
 
-import com.lacker.micros.domain.entity.PaginatedFilter
-import com.lacker.micros.domain.repository.Repository
+import com.mlacker.micros.domain.entity.PaginatedFilter
+import com.mlacker.micros.domain.repository.Repository
 
 interface DefineRepository: Repository<Define> {
 

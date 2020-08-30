@@ -1,16 +1,12 @@
-package com.lacker.micros.utils.encrypt;
+package com.mlacker.micros.utils.encrypt
 
-import org.springframework.util.DigestUtils;
+import org.springframework.util.DigestUtils
 
-public enum Md5Utils {
+enum class Md5Utils {
 
     X;
 
-    public String computeHash(String text) {
-        return DigestUtils.md5DigestAsHex(text.getBytes()).toUpperCase();
-    }
+    fun computeHash(text: String) = DigestUtils.md5DigestAsHex(text.toByteArray()).toUpperCase()
 
-    public boolean verify(String text, String hash) {
-        return computeHash(text).equalsIgnoreCase(hash);
-    }
+    fun verify(text: String, hash: String) = computeHash(text).equals(hash, ignoreCase = true)
 }

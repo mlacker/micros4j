@@ -1,3 +1,5 @@
 package com.mlacker.micros.domain.entity
 
-interface AggregateRoot : Entity
+interface Entity {
+    val id: Long
+}

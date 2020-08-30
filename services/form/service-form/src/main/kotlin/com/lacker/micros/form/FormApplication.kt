@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Import
 @EnableFeignClients("com.lacker.micros.data.api.client")
 @MapperScan("com.lacker.micros.form.repository.mapper")
 @Import(
-        com.lacker.micros.config.FeignConfig::class,
-        com.lacker.micros.config.MapperConfig::class
+        com.mlacker.micros.config.FeignConfig::class,
+        com.mlacker.micros.config.MapperConfig::class
 )
 class FormApplication
 
