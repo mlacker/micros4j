@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lacker.micros.form.repository.mapper.DefineMapper">
-    <select id="findByFilter" resultType="com.lacker.micros.form.domain.define.Define">
+<mapper namespace="com.mlacker.micros.form.repository.mapper.DefineMapper">
+    <select id="findByFilter" resultType="com.mlacker.micros.form.domain.define.Define">
         <bind name="searchString" value="'%' + filters.searchString + '%'"/>
         SELECT * FROM define
         <where>
