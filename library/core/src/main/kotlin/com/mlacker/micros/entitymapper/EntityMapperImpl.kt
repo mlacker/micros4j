@@ -13,4 +13,3 @@ class EntityMapperImpl(private val modelMapper: ModelMapper) : EntityMapper {
         return modelMapper.map(source, type.java)
     }
 }
-

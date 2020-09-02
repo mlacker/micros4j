@@ -14,5 +14,5 @@ class MappingContextProxy<S, D>(
         typeMapName: String?,
         mappingEngine: MappingEngineImpl
 ) : MappingContextImpl<S, D>(source, sourceType, destination, destinationType, genericDestinationType, typeMapName, mappingEngine) {
-    val cacheIdMap = HashMap<Long, Long>()
+    val idAllocator = IdAllocator()
 }

@@ -13,8 +13,13 @@ import org.springframework.context.annotation.Configuration
 class MapperConfig {
 
     @Bean
-    fun modelMapper(): ModelMapper {
-        val modelMapper = ModelMapper().apply {
+    fun modelMapper(): ModelMapper = ModelMapper().also { configure(it) }
+
+    @Bean
+    fun entityMapper(modelMapper: ModelMapper): EntityMapper = EntityMapperImpl(modelMapper)
+
+    fun configure(modelMapper: ModelMapper) {
+        modelMapper.apply {
             configuration.fieldAccessLevel = org.modelmapper.config.Configuration.AccessLevel.PRIVATE
             configuration.isFieldMatchingEnabled = true
             configuration.isSkipNullEnabled = true
@@ -25,12 +30,5 @@ class MapperConfig {
         ModelMapper::class.java.getDeclaredField("engine").apply {
             if (trySetAccessible()) set(modelMapper, MappingEngineProxy(modelMapper.configuration as InheritingConfiguration))
         }
-
-        return modelMapper
-    }
-
-    @Bean
-    fun entityMapper(modelMapper: ModelMapper): EntityMapper {
-        return EntityMapperImpl(modelMapper)
     }
 }

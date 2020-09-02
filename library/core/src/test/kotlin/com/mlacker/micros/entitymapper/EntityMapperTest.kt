@@ -1,14 +1,23 @@
 package com.mlacker.micros.entitymapper
 
-import com.mlacker.micros.domain.annotation.NoArg
 import com.mlacker.micros.config.MapperConfig
+import com.mlacker.micros.domain.annotation.NoArg
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.modelmapper.ModelMapper
 
 class EntityMapperTest {
 
-    private val mapper: EntityMapper = MapperConfig().run { entityMapper(modelMapper()) }
+    private val modelMapper: ModelMapper
+    private val mapper: EntityMapper
+
+    init {
+        MapperConfig().run {
+            modelMapper = modelMapper()
+            mapper = entityMapper(modelMapper)
+        }
+    }
 
     @Test
     fun `basic mapping`() {
@@ -77,18 +86,42 @@ class EntityMapperTest {
         }
     }
 
+    @Test
+    fun `generic list mapping`() {
+        val source = GenericSource(listOf(
+                FooSource(1000, "1000"),
+                FooSource(-1001, "1001"),
+                FooSource(-1002, "1002")
+        ))
+
+        modelMapper.createTypeMap(FooSource::class.java, Long::class.javaObjectType)
+                .setConverter { context -> context.source.id }
+
+        val target = mapper.map(source, GenericTarget::class)
+
+        assertEquals(source.fooList.size, target.fooList.size)
+        assertEquals(source.fooList[0].id, target.fooList[0])
+    }
+
     class Source(val id: Long, var name: String)
     inner class NestedSource(val fooList: List<FooSource>, val barList: List<BarSource>)
     class FooSource(val id: Long, var name: String)
     class BarSource(val id: Long, val foo: Long)
+    class GenericSource(val fooList: List<FooSource>)
 
     @NoArg
     class Target(val id: Long, var name: String)
+
     @NoArg
     inner class NestedTarget(val fooList: List<FooTarget>, val barList: List<BarTarget>)
+
     @NoArg
     class FooTarget(val id: Long, var name: String)
+
     @NoArg
     class BarTarget(val id: Long, val foo: Long)
+
+    @NoArg
+    class GenericTarget(var fooList: List<Long>)
 }
 
