@@ -1,11 +1,15 @@
-package com.lacker.micros.data.api.client;
+package com.mlacker.micros.data.api.client;
 
-import com.lacker.micros.data.api.model.data.QueryModel;
+import com.mlacker.micros.data.api.model.data.QueryModel;
 import java.util.List;
 import java.util.Map;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+@ConditionalOnClass(name = "com.mlacker.micros.report.ReportApplication")
+@FeignClient("service-data/data")
 public interface ReportDataClient {
 
     @PostMapping("query")

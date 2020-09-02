@@ -51,6 +51,7 @@ class GlobalExceptionCatcher {
 
     @ExceptionHandler(Throwable::class)
     fun throwableException(throwable: Throwable): ResponseEntity<ErrorModel> {
+        logger.error(throwable.message, throwable)
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorModel(throwable.message, throwable))
     }
 }

@@ -6,7 +6,10 @@ import org.springframework.boot.runApplication
 import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.context.annotation.Import
 
-@SpringBootApplication(scanBasePackages = ["com.mlacker.micros.form"])
+@SpringBootApplication(scanBasePackages = [
+    "com.mlacker.micros.form",
+    "com.mlacker.micros.domain.exception"
+])
 @EnableFeignClients("com.mlacker.micros.data.api.client")
 @MapperScan("com.mlacker.micros.form.repository.mapper")
 @Import(
