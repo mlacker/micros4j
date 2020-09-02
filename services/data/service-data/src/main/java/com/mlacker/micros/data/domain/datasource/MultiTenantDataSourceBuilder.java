@@ -33,7 +33,7 @@ public class MultiTenantDataSourceBuilder {
             defaultItem = new MultiDataSource(dataSource);
         }
 
-        Map<String, MultiDataSource> multiDataSources = new HashMap<>();
+        Map<Long, MultiDataSource> multiDataSources = new HashMap<>();
         properties.getMultiTenants().forEach((key, tenantProps) -> {
             if (tenantProps != null && tenantProps.getMaster() != null) {
                 multiDataSources.put(key, buildMultiDataSource(tenantProps));

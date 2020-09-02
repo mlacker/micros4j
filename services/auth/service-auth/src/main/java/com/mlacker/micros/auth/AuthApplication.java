@@ -7,9 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {
+        "com.mlacker.micros.auth",
+        "com.mlacker.micros.domain.exception"
+})
 @MapperScan(basePackages = "com.mlacker.micros.auth.repository.mapper")
 @Import({
+        com.mlacker.micros.config.PrincipalConfig.class,
         com.mlacker.micros.config.FeignConfig.class,
         com.mlacker.micros.config.MapperConfig.class
 })

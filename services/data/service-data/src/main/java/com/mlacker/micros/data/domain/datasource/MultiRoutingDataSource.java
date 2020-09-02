@@ -1,6 +1,6 @@
 package com.mlacker.micros.data.domain.datasource;
 
-import com.mlacker.micros.domain.infrastructure.context.SessionContext;
+import com.mlacker.micros.domain.infrastructure.context.PrincipalHolder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
@@ -11,9 +11,9 @@ import org.springframework.util.Assert;
 public class MultiRoutingDataSource extends AbstractDataSource {
 
     private final MultiDataSource defaultMultiDataSource;
-    private final Map<String, MultiDataSource> multiDataSources;
+    private final Map<Long, MultiDataSource> multiDataSources;
 
-    MultiRoutingDataSource(MultiDataSource defaultMultiDataSource, Map<String, MultiDataSource> multiDataSources) {
+    MultiRoutingDataSource(MultiDataSource defaultMultiDataSource, Map<Long, MultiDataSource> multiDataSources) {
         this.defaultMultiDataSource = defaultMultiDataSource;
         this.multiDataSources = multiDataSources;
     }
@@ -31,20 +31,20 @@ public class MultiRoutingDataSource extends AbstractDataSource {
     private DataSource determineTargetDataSource() {
         Assert.notNull(this.multiDataSources, "DataSource router not initialized");
 
-        String tenantId = SessionContext.getTenant();
+        var applicationId = PrincipalHolder.getContext().getApplicationId();
         MultiDataSourceType type = MultiDataSourceContextHolder.getDataSource();
 
-        DataSource dataSource = routingDataSource(tenantId, type);
+        DataSource dataSource = routingDataSource(applicationId, type);
 
         if (dataSource == null) {
-            throw new IllegalStateException("Cannot determine target DataSource for tenant [" + tenantId + "]");
+            throw new IllegalStateException("Cannot determine target DataSource for application [" + applicationId + "]");
         }
 
         return dataSource;
     }
 
-    private DataSource routingDataSource(String tenantId, MultiDataSourceType type) {
-        MultiDataSource multiDataSource = multiDataSources.get(tenantId);
+    private DataSource routingDataSource(Long applicationId, MultiDataSourceType type) {
+        MultiDataSource multiDataSource = multiDataSources.get(applicationId);
 
         if (multiDataSource == null) {
             multiDataSource = defaultMultiDataSource;

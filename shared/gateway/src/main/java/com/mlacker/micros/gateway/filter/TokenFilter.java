@@ -6,6 +6,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.mlacker.micros.config.properties.TokenProperties;
+import com.mlacker.micros.domain.infrastructure.context.PrincipalConstants;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -59,11 +62,13 @@ public class TokenFilter implements GlobalFilter, Ordered {
             DecodedJWT decodedJWT = verifier.verify(token);
 
             String userId = decodedJWT.getSubject();
+            String userName = decodedJWT.getClaim("name").asString();
             String applicationId = decodedJWT.getClaim("app").asString();
 
             ServerHttpRequest mutableRequest = exchange.getRequest().mutate()
-                    .header("X-UserId", userId)
-                    .header("X-ApplicationId", applicationId)
+                    .header(PrincipalConstants.USER_ID, userId)
+                    .header(PrincipalConstants.USER_NAME, URLEncoder.encode(userName, Charset.defaultCharset()))
+                    .header(PrincipalConstants.APPLICATION_ID, applicationId)
                     .build();
             return chain.filter(exchange.mutate().request(mutableRequest).build());
         } catch (JWTVerificationException ex) {

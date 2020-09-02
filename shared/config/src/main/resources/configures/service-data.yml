@@ -15,11 +15,11 @@ micros:
       username: micros_all
       password: p@ssword
     multi-tenants:
-      huaao:
+      1138238647:
         master:
-          database: localhost/ms_data_huaao
+          database: localhost/ms_data_example
         slaves:
-          database: localhost/ms_data_huaao_read
+          database: localhost/ms_data_example_read
           username: micros_all_read
 spring:
   cloud:

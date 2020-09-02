@@ -9,7 +9,7 @@ public class MultiDataSourceProperties {
 
     private DefaultPorps defaults;
     private TenantProps general;
-    private Map<String, TenantProps> multiTenants = new HashMap<>();
+    private Map<Long, TenantProps> multiTenants = new HashMap<>();
 
     public DefaultPorps getDefaults() {
         return defaults;
@@ -27,11 +27,11 @@ public class MultiDataSourceProperties {
         this.general = general;
     }
 
-    public Map<String, TenantProps> getMultiTenants() {
+    public Map<Long, TenantProps> getMultiTenants() {
         return multiTenants;
     }
 
-    public void setMultiTenants(Map<String, TenantProps> multiTenants) {
+    public void setMultiTenants(Map<Long, TenantProps> multiTenants) {
         this.multiTenants = multiTenants;
     }
 
