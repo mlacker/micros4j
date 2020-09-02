@@ -2,6 +2,7 @@ package com.mlacker.micros.form.repository.mapper
 
 import org.apache.ibatis.annotations.Delete
 import org.apache.ibatis.annotations.Insert
+import org.apache.ibatis.annotations.Param
 import org.apache.ibatis.annotations.Select
 
 interface RelationMapper {
@@ -10,7 +11,7 @@ interface RelationMapper {
     fun findByForm(formId: Long): List<Long>
 
     @Insert("INSERT INTO data_relation (form_id, relation_id) VALUES (#{formId}, #{relationId}) ")
-    fun insert(formId: Long, relationId: Long)
+    fun insert(@Param("formId") formId: Long, @Param("relationId") relationId: Long)
 
     @Delete("DELETE FROM data_relation WHERE form_id = #{formId}")
     fun deleteByForm(formId: Long)

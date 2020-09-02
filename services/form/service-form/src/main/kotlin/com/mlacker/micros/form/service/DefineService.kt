@@ -1,9 +1,10 @@
-package com.lacker.micros.form.service
+package com.mlacker.micros.form.service
 
 import com.mlacker.micros.domain.entity.PaginatedFilter
-import com.lacker.micros.form.api.model.define.DefineModel
-import com.lacker.micros.form.domain.define.Define
-import com.lacker.micros.form.domain.define.DefineRepository
+import com.mlacker.micros.entitymapper.EntityMapper
+import com.mlacker.micros.form.api.model.define.DefineModel
+import com.mlacker.micros.form.domain.define.Define
+import com.mlacker.micros.form.domain.define.DefineRepository
 import org.springframework.cache.annotation.CacheConfig
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
@@ -11,10 +12,11 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-@CacheConfig(cacheNames = ["form-defines"])
+@CacheConfig(cacheNames = ["form.defines"])
 class DefineService(
+        private val formService: FormService,
         private val repo: DefineRepository,
-        private val formService: FormService
+        private val mapper: EntityMapper
 ) {
 
     fun findByFilter(filter: PaginatedFilter): List<Define> {
@@ -34,16 +36,17 @@ class DefineService(
     }
 
     @CacheEvict(key = "#model.id")
-    @Transactional(rollbackFor = [Exception::class])
+    @Transactional
     fun save(model: DefineModel) {
-        val define = Define(1, model.name, model.form.id)
+        model.form.id = formService.save(model.form)
 
-        formService.save(model.form)
+        val define = mapper.map(model, Define::class)
+
         repo.save(define)
     }
 
     @CacheEvict(key = "#id")
-    @Transactional(rollbackFor = [Exception::class])
+    @Transactional
     fun delete(id: Long) {
         val define = repo.find(id)
 

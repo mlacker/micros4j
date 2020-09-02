@@ -7,7 +7,7 @@ internal class FormComponentTest {
 
     @Test
     fun `clone form`() {
-        val form1 = FormComponent(1, "clone form", "")
+        val form1 = FormComponent(1, "clone form", "ms-form", "")
         val form2 = form1.clone()
 
         assertNotEquals(form1.id, form2.id)

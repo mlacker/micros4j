@@ -1,7 +1,10 @@
 package com.mlacker.micros.form.api.model.component
 
+import com.mlacker.micros.domain.annotation.NoArg
+
+@NoArg
 open class ComponentModel(
-        val id: Long,
+        open val id: Long,
         val name: String,
         val type: String,
         val properties: String,

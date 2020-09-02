@@ -10,7 +10,7 @@ open class Component(
         // val archive: string,
 ) : EntityImpl(id), Cloneable {
 
-    var parentId: Long = 0
+    var parentId: Long? = null
 
     public override fun clone() = super<EntityImpl>.clone() as Component
 }
