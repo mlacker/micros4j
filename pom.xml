@@ -28,8 +28,8 @@
     <properties>
         <java.version>11</java.version>
         <kotlin.version>1.4.0</kotlin.version>
-        <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
-        <spring-cloud.version>Hoxton.SR7</spring-cloud.version>
+        <spring-boot.version>2.6.8.RELEASE</spring-boot.version>
+        <spring-cloud.version>2021.0.2</spring-cloud.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
