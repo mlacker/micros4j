@@ -1,0 +1,10 @@
+spring:
+  rabbitmq:
+    host: 192.168.20.20
+    port: 5672
+  redis:
+    host: 192.168.20.20
+    port: 6379
+micros:
+  datasource:
+    server: 192.168.20.20:3306

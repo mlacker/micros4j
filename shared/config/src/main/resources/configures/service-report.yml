@@ -1,5 +1,0 @@
-server:
-  port: 8400
-micros:
-  application:
-    name: report

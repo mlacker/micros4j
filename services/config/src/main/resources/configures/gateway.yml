@@ -1,0 +1,29 @@
+server:
+  port: 8000
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: service-auth
+          uri: lb://service-auth
+          predicates:
+            - Path=/auth-api/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
+              args:
+                retries: 2
+                series:
+                  - SERVER_ERROR
+                methods:
+                  - GET
+                  - PUT
+                  - DELETE
+                exceptions:
+                  - java.lang.Exception
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 200
+        read-timeout: 3000
